@@ -18,10 +18,42 @@ function createGrid(x) {
 $(document).ready(function() {
     createGrid(16);
 
-    $(".grid").mouseover(function() {
-        $(this).css("background-color", "grey");
+     $(".grid").mouseover(function() {
+         //$(this).css("background-color", "grey");
           $(this).css("cursor", "pointer");
-        });
+         });
+    var a=[],bt=[];
+    var y="";
+    var b=document.querySelectorAll('.b');
+    var a=document.querySelectorAll('.grid');
+    b.forEach(function(button,index){
+      button.addEventListener('click',function(){
+        console.log("button clicked");
+        if(index==0)
+        {
+          y="green";
+        }
+        else if (index==1) {
+          y="grey";
+        }
+        else if (index==2) {
+          y="violet";
+        }
+        else if (index==3) {
+          y="red";
+        }
+        else{
+          y="";
+        }
 
+      });
+    });
+    a.forEach(function(button,index){
+      button.addEventListener('click',function(){
+        console.log("clicked");
+        a[index].style.background=y;
+
+      });
+    });
 
 });

@@ -10,7 +10,22 @@
 	padding: 0;
 	border: none;
 }
-
+#button1{
+	position:relative;
+	background: rgba(0,128,0,0.5);
+}
+#button2{
+	position:relative;
+	background: 	rgba(128,128,128,0.5);
+}
+#button3{
+	position:relative;
+	background: rgba(92, 10, 163,0.5);
+}
+#button4{
+	position:relative;
+	background: rgba(128,0,0,0.5);
+}
 
 .grid {
 	margin:0;
