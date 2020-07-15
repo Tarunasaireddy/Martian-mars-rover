@@ -9,6 +9,14 @@ function createGrid(x) {
     $(".grid").height(960/x);
 };
 // consider each block as a node
+function deletegrid(x){
+   $(".grid").remove();
+}
+function refreshGrid(){
+    var z = prompt("How many boxes per side?");
+    deletegrid();
+    return z;
+};
 class Node {
 
   constructor(size, posx, posy, walkable, startpoints,endpoints) {
@@ -486,8 +494,9 @@ function astarSearch(a,eachnode,startpoints,endpoints,size)
 // we will decide grid size accordingly
 // this is for manuplating things as required for our project.
 $(document).ready(function() {
-    createGrid(20);
+
     var size=20;
+    createGrid(size);
      $(".grid").mouseover(function() {
          //$(this).css("background-color", "grey");
           $(this).css("cursor", "pointer");
@@ -543,6 +552,17 @@ $(document).ready(function() {
           y=3;
         }
         else if (index==4) {
+          size=refreshGrid();
+          stops=[];
+          walls=[];
+
+          createGrid(size);
+          $(".grid").mouseover(function() {
+              //$(this).css("background-color", "grey");
+               $(this).css("cursor", "pointer");
+              });
+          a=[];
+          a=document.querySelectorAll('.grid');
           startpoints=[];
           endpoints=[];
           startpoints.push(0);
@@ -567,6 +587,60 @@ $(document).ready(function() {
           a[size*size-1].style.background="red";
           eachnode[0].toggleOccupied();
           eachnode[size*size-1].toggleOccupied();
+          a.forEach(function(button,index){
+            button.addEventListener('click',function(){
+              console.log("clicked");
+              console.log(y);
+              if(y==0)
+              {
+                 console.log(eachnode[index].occupied);
+                 console.log(index);
+                 if(eachnode[index].occupied==false)
+                 {
+                   console.log("finally");
+                 startpoints.push(index);
+                 eachnode[index].toggleOccupied();
+                 eachnode[index].createStartNode(a,index);
+                 eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+                 eachnode[startpoints[0]].toggleOccupied();
+                startpoints[0]=startpoints[1];
+                startpoints.pop();
+                console.log(startpoints[0]);
+                }
+              }
+              else if (y==1) {
+                if(eachnode[index].occupied==false)
+              {
+
+                walls.push(index);
+                eachnode[index].createWall(a,index);
+                eachnode[index].toggleWalkable();
+                eachnode[index].toggleOccupied();
+                console.log(eachnode[index].walkable);
+              }
+              }
+              else if (y==2) {
+                if(eachnode[index].occupied==false)
+                {
+                stops.push(index);
+                eachnode[index].createStop(a,index);
+              }
+              }
+              else if (y==3) {
+                if(eachnode[index].occupied==false){
+                endpoints.push(index);
+                eachnode[index].toggleOccupied(a,index);
+                eachnode[index].createEndNode(a,index);
+                eachnode[endpoints[0]].removeNode(a,endpoints[0]);
+                eachnode[endpoints[0]].toggleOccupied();
+                endpoints[0]=endpoints[1];
+                endpoints.pop();
+              }
+              }
+
+            });
+          });
+
         }
         else if (index==5) {
         astarSearch(a,eachnode,startpoints,endpoints,size);
