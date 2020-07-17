@@ -1,4 +1,4 @@
-// This is for creating grid
+ // This is for creating grid
 function createGrid(x) {
     for (var rows = 0; rows < x; rows++) {
         for (var columns = 0; columns < x; columns++) {
@@ -8,7 +8,6 @@ function createGrid(x) {
     $(".grid").width(960/x);
     $(".grid").height(960/x);
 };
-// consider each block as a node
 function deletegrid(x){
    $(".grid").remove();
 }
@@ -17,6 +16,8 @@ function refreshGrid(){
     deletegrid();
     return z;
 };
+
+// consider each block as a node
 class Node {
 
   constructor(size, posx, posy, walkable, startpoints,endpoints) {
@@ -37,6 +38,7 @@ class Node {
     this.occupied=false;
     this.startpoints=startpoints;
     this.endpoints=endpoints;
+    this.visited= false;
 
   }
 
@@ -480,6 +482,101 @@ function astarSearch(a,eachnode,startpoints,endpoints,size)
     return;
 }
 
+//implementation of a queue
+class Queue {
+  constructor() {
+      this.items=[];
+   }
+  enqueue(index) {
+      this.items.push(index);
+  }
+  dequeue(index) {
+      if(!this.isEmpty()) {
+        return this.items.shift();
+      }
+  }
+  front() {
+      if(!this.isEmpty()) {
+        return this.items[0];
+      }
+  }  
+  isEmpty() {
+      return this.items.length==0;
+  }
+
+}
+
+//breadthfirst search here
+function breadthFirstSearch(a,eachnode,startpoints,endpoints,size){
+  var i,j;
+  i=Math.floor(startpoints[0]/size);
+  j=Math.floor(startpoints[0]%size);
+
+  var foundDest=false;
+  var q=new Queue();
+
+  //starting point is made parent of itself and added to the queue
+  eachnode[startpoints[0]].parent_i=i;
+  eachnode[startpoints[0]].parent_j=j;
+
+  eachnode[startpoints[0]].visited=true;
+  q.enqueue(startpoints[0]);
+
+  while(q.isEmpty()==false){
+    var current= q.front();
+    q.dequeue();
+    if(current==endpoints[0]){
+      foundDest=true;
+      return;
+    }
+    i= Math.floor(current/size);
+    j= Math.floor(current%size);
+
+    //valid neighbouring blocks of the current block are added to an array 
+    var neighbours= [];
+
+    if(isValid(i-1,j,size)) neighbours.push([i-1,j]); 
+    if(isValid(i,j+1,size)) neighbours.push([i,j+1]); 
+    if(isValid(i+1,j,size)) neighbours.push([i+1,j]); 
+    if(isValid(i,j-1,size)) neighbours.push([i,j-1]); 
+
+    if(isValid(i-1,j+1,size)) neighbours.push([i-1,j+1]); 
+    if(isValid(i+1,j+1,size)) neighbours.push([i+1,j+1]);
+    if(isValid(i+1,j-1,size)) neighbours.push([i+1,j-1]);
+    if(isValid(i-1,j-1,size)) neighbours.push([i-1,j-1]);
+
+    for(next of neighbours){
+      var x= next[0];
+      var y= next[1];
+      var ind= (x*size) + y;
+      
+      if(isDestionation(x,y,endpoints,size)==true){
+        eachnode[endpoints[0]].parent_i=i;
+        eachnode[endpoints[0]].parent_j=j;
+        tracePath(a,eachnode,endpoints,size);
+        foundDest=true;
+        return;
+      }
+
+      //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
+      //its parent is the current block
+      else if(eachnode[ind].visited==false && eachnode[ind].occupied==false){
+        eachnode[ind].parent_i=i;
+        eachnode[ind].parent_j=j;
+        
+        eachnode[ind].visited=true;
+        q.enqueue(ind);
+      }
+
+    }
+
+  }
+  if(foundDest == false){
+    alert("not found");
+  }
+  return;
+}
+
 
 
 
@@ -492,7 +589,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size)
 
 
 // we will decide grid size accordingly
-// this is for manuplating things as required for our project.
+// this is for manipulating things as required for our project.
 $(document).ready(function() {
 
     var size=20;
@@ -644,6 +741,9 @@ $(document).ready(function() {
         }
         else if (index==5) {
         astarSearch(a,eachnode,startpoints,endpoints,size);
+        }
+        else if(index==6) {
+          breadthFirstSearch(a,eachnode,startpoints,endpoints,size);
         }
       });
     });
