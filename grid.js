@@ -198,282 +198,96 @@ function astarSearch(a,eachnode,startpoints,endpoints,size)
 
    var gnew, hnew, fnew;
 
- //111111111111111111111111111111111111111111111111111111111111111111
+ var neighbours1 = [];
+ var neighbours2 = [];
 
-   if(isValid(i-1,j,size)==true)
+ if(isValid(i-1,j,size)) neighbours1.push([i-1,j]);
+ if(isValid(i,j+1,size)) neighbours1.push([i,j+1]);
+ if(isValid(i+1,j,size)) neighbours1.push([i+1,j]);
+ if(isValid(i,j-1,size)) neighbours1.push([i,j-1]);
+
+ if(isValid(i-1,j+1,size)) neighbours2.push([i-1,j+1]);
+ if(isValid(i+1,j+1,size)) neighbours2.push([i+1,j+1]);
+ if(isValid(i+1,j-1,size)) neighbours2.push([i+1,j-1]);
+ if(isValid(i-1,j-1,size)) neighbours2.push([i-1,j-1]);
+for(next of neighbours1){
+   var x= next[0];
+   var y= next[1];
+   var ind= (x*size) + y;
+   if(isValid(x,y,size)==true)
    {
-     if(isDestionation(i-1,j,endpoints,size)==true)
+     if(isDestionation(x,y,endpoints,size)==true)
 
      {
-       eachnode[(i-1)*size+j].parent_i=i;
-       eachnode[(i-1)*size+j].parent_j=j;
+       eachnode[ind].parent_i=i;
+       eachnode[ind].parent_j=j;
        tracePath(a,eachnode, endpoints, size);
        foundDest=true;
        return;
 
      }
 
-   else if (closedset[(i-1)*size+j].value==false && eachnode[(i-1)*size+j].occupied==false) {
+   else if (closedset[ind].value==false && eachnode[ind].occupied==false) {
 
       console.log("entered1");
       gnew = eachnode[(i)*size+j].getGCost+1;
-      hnew = calculateHValue(i-1,j,endpoints,size);
+      hnew = calculateHValue(x,y,endpoints,size);
       fnew=gnew+hnew;
-      if (eachnode[(i-1)*size+j].getFCost == Infinity ||  eachnode[(i-1)*size+j].getFCost > fnew)
+      if (eachnode[ind].getFCost == Infinity ||  eachnode[ind].getFCost > fnew)
                {
-                   temp=new openList(fnew,i-1,j);
+                   temp=new openList(fnew,x,y);
                    openset.add(temp);
 
                    // Update the details of this cell
-                   eachnode[(i-1)*size+j].getFCost = fnew;
-                   eachnode[(i-1)*size+j].getGCost = gnew;
-                   eachnode[(i-1)*size+j].getHCost = hnew;
-                   eachnode[(i-1)*size+j].parent_i = i;
-                   eachnode[(i-1)*size+j].parent_j = j;
+                   eachnode[ind].getFCost = fnew;
+                   eachnode[ind].getGCost = gnew;
+                   eachnode[ind].getHCost = hnew;
+                   eachnode[ind].parent_i = i;
+                   eachnode[ind].parent_j = j;
               }
       }
 
-   }
-   //22222222222222222222222222222222222222222222222222222222222222222222222222222
-   if(isValid(i+1,j,size)==true)
-   {
-    // console.log(closedset[(i+1)*size+j].value);
-     //console.log(eachnode[(i+1)*size+j].occupied);
-     console.log("entered2");
-     if(isDestionation(i+1,j,endpoints,size)==true)
-
+    }
+  }
+  for(next of neighbours2){
+     var x= next[0];
+     var y= next[1];
+     var ind= (x*size) + y;
+     if(isValid(x,y,size)==true)
      {
-       eachnode[(i+1)*size+j].parent_i=i;
-       eachnode[(i+1)*size+j].parent_j=j;
-       tracePath(a,eachnode, endpoints, size);
-       foundDest=true;
-       return;
+       if(isDestionation(x,y,endpoints,size)==true)
 
-     }
+       {
+         eachnode[ind].parent_i=i;
+         eachnode[ind].parent_j=j;
+         tracePath(a,eachnode, endpoints, size);
+         foundDest=true;
+         return;
 
-   else if (closedset[(i+1)*size+j].value==false && eachnode[(i+1)*size+j].occupied==false) {
+       }
 
-      gnew = eachnode[(i)*size+j].getGCost+1;
-      hnew = calculateHValue(i+1,j,endpoints,size);
-      fnew=gnew+hnew;
-      if (eachnode[(i+1)*size+j].getFCost == Infinity ||  eachnode[(i+1)*size+j].getFCost > fnew)
-               {
-                   temp=new openList(fnew,i+1,j);
-                   openset.add(temp);
+     else if (closedset[ind].value==false && eachnode[ind].occupied==false) {
 
-                   // Update the details of this cell
-                   eachnode[(i+1)*size+j].getFCost = fnew;
-                   eachnode[(i+1)*size+j].getGCost = gnew;
-                   eachnode[(i+1)*size+j].getHCost = hnew;
-                   eachnode[(i+1)*size+j].parent_i = i;
-                   eachnode[(i+1)*size+j].parent_j = j;
-              }
-      }
+        console.log("entered1");
+        gnew = eachnode[(i)*size+j].getGCost+1.44;
+        hnew = calculateHValue(x,y,endpoints,size);
+        fnew=gnew+hnew;
+        if (eachnode[ind].getFCost == Infinity ||  eachnode[ind].getFCost > fnew)
+                 {
+                     temp=new openList(fnew,x,y);
+                     openset.add(temp);
 
-   }
-   //33333333333333333333333333333333333333333333333333333333333333333333333333
-   if(isValid(i,j+1,size)==true)
-   {
-     if(isDestionation(i,j+1,endpoints,size)==true)
+                     // Update the details of this cell
+                     eachnode[ind].getFCost = fnew;
+                     eachnode[ind].getGCost = gnew;
+                     eachnode[ind].getHCost = hnew;
+                     eachnode[ind].parent_i = i;
+                     eachnode[ind].parent_j = j;
+                }
+        }
 
-     {
-       eachnode[(i)*size+j+1].parent_i=i;
-       eachnode[(i)*size+j+1].parent_j=j;
-       tracePath(a,eachnode, endpoints,size);
-       foundDest=true;
-       return;
-
-     }
-
-   else if (closedset[(i)*size+j+1].value==false && eachnode[(i)*size+j+1].occupied==false) {
-      console.log("entered3");
-      gnew = eachnode[(i)*size+j].getGCost+1;
-      hnew = calculateHValue(i,j+1,endpoints,size);
-      fnew=gnew+hnew;
-      if (eachnode[(i)*size+j+1].getFCost == Infinity ||  eachnode[(i)*size+j+1].getFCost > fnew)
-               {
-                   temp=new openList(fnew,i,j+1);
-                   openset.add(temp);
-
-                   // Update the details of this cell
-                   eachnode[(i)*size+j+1].getFCost = fnew;
-                   eachnode[(i)*size+j+1].getGCost = gnew;
-                   eachnode[(i)*size+j+1].getHCost = hnew;
-                   eachnode[(i)*size+j+1].parent_i = i;
-                   eachnode[(i)*size+j+1].parent_j = j;
-              }
-      }
-
-   }
-   //444444444444444444444444444444444444444444444444444444444444444444
-   if(isValid(i,j-1,size)==true)
-   {
-     if(isDestionation(i,j-1,endpoints,size)==true)
-
-     {
-       eachnode[(i)*size+j-1].parent_i=i;
-       eachnode[(i)*size+j-1].parent_j=j;
-       tracePath(a,eachnode, endpoints,size);
-       foundDest=true;
-       return;
-
-     }
-
-   else if (closedset[(i)*size+j-1].value==false && eachnode[(i)*size+j-1].occupied==false) {
-      console.log("entered4");
-      gnew = eachnode[(i)*size+j].getGCost+1;
-      hnew = calculateHValue(i,j-1,endpoints,size);
-      fnew=gnew+hnew;
-      if (eachnode[(i)*size+j-1].getFCost == Infinity ||  eachnode[(i)*size+j-1].getFCost > fnew)
-               {
-                   temp=new openList(fnew,i,j-1);
-                   openset.add(temp);
-
-                   // Update the details of this cell
-                   eachnode[(i)*size+j-1].getFCost = fnew;
-                   eachnode[(i)*size+j-1].getGCost = gnew;
-                   eachnode[(i)*size+j-1].getHCost = hnew;
-                   eachnode[(i)*size+j-1].parent_i = i;
-                   eachnode[(i)*size+j-1].parent_j = j;
-              }
       }
     }
-      //5555555555555555555555555555555555555555555555555555555555555555555555555
-      if(isValid(i-1,j+1,size)==true)
-      {
-        if(isDestionation(i-1,j+1,endpoints,size)==true)
-
-        {
-          eachnode[(i-1)*size+j+1].parent_i=i;
-          eachnode[(i-1)*size+j+1].parent_j=j;
-          tracePath(a,eachnode, endpoints,size);
-          foundDest=true;
-          return;
-
-        }
-
-      else if (closedset[(i-1)*size+j+1].value==false && eachnode[(i-1)*size+j+1].occupied==false) {
-         console.log("entered5");
-         gnew = eachnode[(i)*size+j].getGCost+1.414;
-         hnew = calculateHValue(i-1,j+1,endpoints,size);
-         fnew=gnew+hnew;
-         if (eachnode[(i-1)*size+j+1].getFCost == Infinity ||  eachnode[(i-1)*size+j+1].getFCost > fnew)
-                  {
-                      temp=new openList(fnew,i-1,j+1);
-                      openset.add(temp);
-
-                      // Update the details of this cell
-                      eachnode[(i-1)*size+j+1].getFCost = fnew;
-                      eachnode[(i-1)*size+j+1].getGCost = gnew;
-                      eachnode[(i-1)*size+j+1].getHCost = hnew;
-                      eachnode[(i-1)*size+j+1].parent_i = i;
-                      eachnode[(i-1)*size+j+1].parent_j = j;
-                 }
-         }
-
-      }
-      //666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-      if(isValid(i-1,j-1,size)==true)
-      {
-        if(isDestionation(i-1,j-1,endpoints,size)==true)
-
-        {
-          eachnode[(i-1)*size+j-1].parent_i=i;
-          eachnode[(i-1)*size+j-1].parent_j=j;
-          tracePath(a,eachnode, endpoints,size);
-          foundDest=true;
-          return;
-
-        }
-
-      else if (closedset[(i-1)*size+j-1].value==false && eachnode[(i-1)*size+j-1].occupied==false) {
-         console.log("entered6");
-         gnew = eachnode[(i)*size+j].getGCost+1.414;
-         hnew = calculateHValue(i-1,j-1,endpoints,size);
-         fnew=gnew+hnew;
-         if (eachnode[(i-1)*size+j-1].getFCost == Infinity ||  eachnode[(i-1)*size+j-1].getFCost > fnew)
-                  {
-                      temp=new openList(fnew,i-1,j-1);
-                      openset.add(temp);
-
-                      // Update the details of this cell
-                      eachnode[(i-1)*size+j-1].getFCost = fnew;
-                      eachnode[(i-1)*size+j-1].getGCost = gnew;
-                      eachnode[(i-1)*size+j-1].getHCost = hnew;
-                      eachnode[(i-1)*size+j-1].parent_i = i;
-                      eachnode[(i-1)*size+j-1].parent_j = j;
-                 }
-         }
-
-      }
-      //7777777777777777777777777777777777777777777777777777777777777777777777777
-      if(isValid(i+1,j+1,size)==true)
-      {
-        if(isDestionation(i+1,j+1,endpoints,size)==true)
-
-        {
-          eachnode[(i+1)*size+j+1].parent_i=i;
-          eachnode[(i+1)*size+j+1].parent_j=j;
-          tracePath(a,eachnode, endpoints,size);
-          foundDest=true;
-          return;
-
-        }
-
-      else if (closedset[(i+1)*size+j+1].value==false && eachnode[(i+1)*size+j+1].occupied==false) {
-         console.log("entered7");
-         gnew = eachnode[(i)*size+j].getGCost+1.414;
-         hnew = calculateHValue(i+1,j+1,endpoints,size);
-         fnew=gnew+hnew;
-         if (eachnode[(i+1)*size+j+1].getFCost == Infinity ||  eachnode[(i+1)*size+j+1].getFCost > fnew)
-                  {
-                      temp=new openList(fnew,i+1,j+1);
-                      openset.add(temp)
-
-                      // Update the details of this cell
-                      eachnode[(i+1)*size+j+1].getFCost = fnew;
-                      eachnode[(i+1)*size+j+1].getGCost = gnew;
-                      eachnode[(i+1)*size+j+1].getHCost = hnew;
-                      eachnode[(i+1)*size+j+1].parent_i = i;
-                      eachnode[(i+1)*size+j+1].parent_j = j;
-                 }
-         }
-
-      }
-      //88888888888888888888888888888888888888888888888888888888888888888888
-      if(isValid(i+1,j-1,size)==true)
-      {
-        if(isDestionation(i+1,j-1,endpoints,size)==true)
-
-        {
-          eachnode[(i+1)*size+j-1].parent_i=i;
-          eachnode[(i+1)*size+j-1].parent_j=j;
-          tracePath(a,eachnode, endpoints,size);
-          foundDest=true;
-          return;
-
-        }
-
-      else if (closedset[(i+1)*size+j-1].value==false && eachnode[(i+1)*size+j-1].occupied==false) {
-          console.log("entered8");
-         gnew = eachnode[(i)*size+j].getGCost+1.414;
-         hnew = calculateHValue(i+1,j-1,endpoints,size);
-         fnew=gnew+hnew;
-         if (eachnode[(i+1)*size+j-1].getFCost == Infinity ||  eachnode[(i+1)*size+j-1].getFCost > fnew)
-                  {
-                      temp=new openList(fnew,i+1,j-1);
-                      openset.add(temp);
-
-                      // Update the details of this cell
-                      eachnode[(i+1)*size+j-1].getFCost = fnew;
-                      eachnode[(i+1)*size+j-1].getGCost = gnew;
-                      eachnode[(i+1)*size+j-1].getHCost = hnew;
-                      eachnode[(i+1)*size+j-1].parent_i = i;
-                      eachnode[(i+1)*size+j-1].parent_j = j;
-                 }
-         }
-
-      }
 
   }
   if (foundDest == false)
@@ -499,7 +313,7 @@ class Queue {
       if(!this.isEmpty()) {
         return this.items[0];
       }
-  }  
+  }
   isEmpty() {
       return this.items.length==0;
   }
@@ -532,15 +346,15 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size){
     i= Math.floor(current/size);
     j= Math.floor(current%size);
 
-    //valid neighbouring blocks of the current block are added to an array 
+    //valid neighbouring blocks of the current block are added to an array
     var neighbours= [];
 
-    if(isValid(i-1,j,size)) neighbours.push([i-1,j]); 
-    if(isValid(i,j+1,size)) neighbours.push([i,j+1]); 
-    if(isValid(i+1,j,size)) neighbours.push([i+1,j]); 
-    if(isValid(i,j-1,size)) neighbours.push([i,j-1]); 
+    if(isValid(i-1,j,size)) neighbours.push([i-1,j]);
+    if(isValid(i,j+1,size)) neighbours.push([i,j+1]);
+    if(isValid(i+1,j,size)) neighbours.push([i+1,j]);
+    if(isValid(i,j-1,size)) neighbours.push([i,j-1]);
 
-    if(isValid(i-1,j+1,size)) neighbours.push([i-1,j+1]); 
+    if(isValid(i-1,j+1,size)) neighbours.push([i-1,j+1]);
     if(isValid(i+1,j+1,size)) neighbours.push([i+1,j+1]);
     if(isValid(i+1,j-1,size)) neighbours.push([i+1,j-1]);
     if(isValid(i-1,j-1,size)) neighbours.push([i-1,j-1]);
@@ -549,7 +363,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size){
       var x= next[0];
       var y= next[1];
       var ind= (x*size) + y;
-      
+
       if(isDestionation(x,y,endpoints,size)==true){
         eachnode[endpoints[0]].parent_i=i;
         eachnode[endpoints[0]].parent_j=j;
@@ -563,7 +377,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size){
       else if(eachnode[ind].visited==false && eachnode[ind].occupied==false){
         eachnode[ind].parent_i=i;
         eachnode[ind].parent_j=j;
-        
+
         eachnode[ind].visited=true;
         q.enqueue(ind);
       }
