@@ -55,7 +55,7 @@ createEndNode(a,index) {
 
 }
 createAlienNode(a,index) {
-    
+
     a[index].style.background="yellow";
 
 }
@@ -539,7 +539,7 @@ else
 if(distRover!=0 && distAlien!=0){
   console.log("rover dist="+String(distRover));
   console.log("alien dist="+String(distAlien));
-  if(distRover<distAlien){    
+  if(distRover<distAlien){
     alert("Our Rover will reach Mars first! :)");
     for(var i=1;i<=distRover;i++)
     {
@@ -552,7 +552,7 @@ if(distRover!=0 && distAlien!=0){
     {
       eachnode[alienpath[i]].createpath(a,alienpath[i]);
     }
-    
+
   }
   else{
     alert("both rover and aliens will reach Mars at the same time! Get ready for a BATTLE!!");
@@ -729,9 +729,9 @@ $(document).ready(function() {
                 eachnode[index].toggleWalkable();
                 eachnode[index].toggleOccupied();
                 console.log(eachnode[index].walkable);
-              }            
+              }
             }
-            
+
             else if (y==2) {
                 if(eachnode[index].occupied==false)
                 {
@@ -768,7 +768,7 @@ $(document).ready(function() {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
         else allowDiagonal=false;
-        console.log("hi " + stops.length);
+        //console.log("hi " + stops.length);
         if(stops.length==0)
         {
           astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
@@ -785,7 +785,17 @@ $(document).ready(function() {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
         else allowDiagonal=false;
+        if(stops.length==0)
+        {
         breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal);
+        }
+        else{
+
+            breadthFirstSearch(a,eachnode,startpoints,stops,size,allowDiagonal);
+            makenew(a,eachnode,size);
+            breadthFirstSearch(a,eachnode,stops,endpoints,size,allowDiagonal);
+        }
+
       }
       else if(index==7)
       {
@@ -829,7 +839,7 @@ $(document).ready(function() {
           console.log(eachnode[index].walkable);
           if(eachnode[index].occupied==false)
         {
-  
+
           walls.push(index);
           eachnode[index].createWall(a,index);
           eachnode[index].toggleWalkable();
@@ -843,14 +853,14 @@ $(document).ready(function() {
             eachnode[index].toggleWalkable();
             console.log(eachnode[index].walkable);
           }
-          
+
         }
         else if (y==2) {
           if(eachnode[index].occupied==false)
           {
             if(stops.length==0)
             {
-  
+
           stops.push(index);
           eachnode[index].createStop(a,index);
             eachnode[index].toggleOccupied();
@@ -858,7 +868,7 @@ $(document).ready(function() {
            else{
              alert("more than one stop is not allowed");
            }
-  
+
         }
         }
         else if (y==3) {
@@ -873,7 +883,7 @@ $(document).ready(function() {
         }
         }
         else if(y==7) {
-          
+
           if(eachnode[index].occupied==false){
             aliens.push(index);
             alienpresent= true;
@@ -886,21 +896,17 @@ $(document).ready(function() {
               aliens[0]=aliens[1];
               aliens.pop();
             }
-          
+
           }
         }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
       });
     });
 
 
   });
-  
-
-
-
