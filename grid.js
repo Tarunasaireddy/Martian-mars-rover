@@ -152,7 +152,7 @@ function tracePath(a,eachnode,dest,size)
 
 //astar search here
 
-function astarSearch(a,eachnode,startpoints,endpoints,size)
+function astarSearch(a,eachnode,startpoints,endpoints,size,flag)
 {
 
 
@@ -221,7 +221,10 @@ for(next of neighbours1){
      {
        eachnode[ind].parent_i=i;
        eachnode[ind].parent_j=j;
+       if(flag==1)
+       {
        tracePath(a,eachnode, endpoints, size);
+       }
        foundDest=true;
        return;
 
@@ -394,9 +397,16 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size){
 
 
 
-
-
-
+function makenew(a,eachnode,size){
+  for(var i=0;i<size*size;i++)
+  {
+    eachnode[i].getFCost=Infinity;
+    eachnode[i].getGCost=Infinity;
+    eachnode[i].getHCost=Infinity;
+    eachnode[i].parent_i=-1;
+    eachnode[i].parent_j=-1;
+  }
+}
 
 
 
@@ -533,8 +543,17 @@ $(document).ready(function() {
               else if (y==2) {
                 if(eachnode[index].occupied==false)
                 {
+                //console.log("hi");
+                if(stops.length==0)
+                {
                 stops.push(index);
                 eachnode[index].createStop(a,index);
+                eachnode[index].toggleOccupied();
+              }
+              else{
+                alert("more than one stop is not allowed");
+              }
+
               }
               }
               else if (y==3) {
@@ -554,7 +573,18 @@ $(document).ready(function() {
 
         }
         else if (index==5) {
-        astarSearch(a,eachnode,startpoints,endpoints,size);
+       console.log("hi " + stops.length);
+       if(stops.length==0)
+       {
+        astarSearch(a,eachnode,startpoints,endpoints,size,1);
+       }
+       else {
+
+         astarSearch(a,eachnode,startpoints,stops,size,1);
+         makenew(a,eachnode,size);
+         astarSearch(a,eachnode,stops,endpoints,size,1);
+       }
+
         }
         else if(index==6) {
           breadthFirstSearch(a,eachnode,startpoints,endpoints,size);
@@ -596,8 +626,17 @@ $(document).ready(function() {
         else if (y==2) {
           if(eachnode[index].occupied==false)
           {
+            if(stops.length==0)
+            {
+
           stops.push(index);
           eachnode[index].createStop(a,index);
+            eachnode[index].toggleOccupied();
+           }
+           else{
+             alert("more than one stop is not allowed");
+           }
+
         }
         }
         else if (y==3) {
