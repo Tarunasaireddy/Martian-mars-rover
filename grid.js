@@ -179,7 +179,7 @@ return neighbours;
 
 //astar search here
 
-function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
+function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 {
 
 
@@ -239,7 +239,10 @@ for(next of neighbours){
    {
      eachnode[ind].parent_i=i;
      eachnode[ind].parent_j=j;
-     tracePath(a,eachnode, endpoints, size);
+     if(flag==1)
+       {
+       tracePath(a,eachnode, endpoints, size);
+       }
      foundDest=true;
      return;
 
@@ -584,9 +587,16 @@ else if(distAlien==0){
 }
 
 
-
-
-
+function makenew(a,eachnode,size){
+  for(var i=0;i<size*size;i++)
+  {
+    eachnode[i].getFCost=Infinity;
+    eachnode[i].getGCost=Infinity;
+    eachnode[i].getHCost=Infinity;
+    eachnode[i].parent_i=-1;
+    eachnode[i].parent_j=-1;
+  }
+}
 
 
 
@@ -721,24 +731,33 @@ $(document).ready(function() {
                 console.log(eachnode[index].walkable);
               }            
             }
+            
             else if (y==2) {
-              if(eachnode[index].occupied==false)
-              {
-              stops.push(index);
-              eachnode[index].createStop(a,index);
+                if(eachnode[index].occupied==false)
+                {
+                //console.log("hi");
+                if(stops.length==0)
+                {
+                stops.push(index);
+                eachnode[index].createStop(a,index);
+                eachnode[index].toggleOccupied();
               }
-    
+              else{
+                alert("more than one stop is not allowed");
+              }
+
+              }
             }
             else if (y==3) {
-              if(eachnode[index].occupied==false){
-              endpoints.push(index);
-              eachnode[index].toggleOccupied(a,index);
-              eachnode[index].createEndNode(a,index);
-              eachnode[endpoints[0]].removeNode(a,endpoints[0]);
-              eachnode[endpoints[0]].toggleOccupied();
-              endpoints[0]=endpoints[1];
-              endpoints.pop();
-            }
+                if(eachnode[index].occupied==false){
+                endpoints.push(index);
+                eachnode[index].toggleOccupied(a,index);
+                eachnode[index].createEndNode(a,index);
+                eachnode[endpoints[0]].removeNode(a,endpoints[0]);
+                eachnode[endpoints[0]].toggleOccupied();
+                endpoints[0]=endpoints[1];
+                endpoints.pop();
+              }
             }
 
           });
@@ -749,7 +768,18 @@ $(document).ready(function() {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
         else allowDiagonal=false;
-        astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal);
+        console.log("hi " + stops.length);
+        if(stops.length==0)
+        {
+          astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
+        }
+        else {
+
+          astarSearch(a,eachnode,startpoints,stops,size,allowDiagonal,1);
+          makenew(a,eachnode,size);
+          astarSearch(a,eachnode,stops,endpoints,size,allowDiagonal,1);
+        }
+
       }
       else if(index==6) {
         var diag= document.getElementById("diagonal");
@@ -771,93 +801,106 @@ $(document).ready(function() {
           safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal);
         }
       }
+      });
     });
-  });
-  a.forEach(function(button,index){
-    button.addEventListener('click',function(){
-      console.log("clicked");
-      console.log(y);
-      if(y==0)
-      {
-         console.log(eachnode[index].occupied);
-         console.log(index);
-         if(eachnode[index].occupied==false)
-         {
-           console.log("finally");
-         startpoints.push(index);
-         eachnode[index].toggleOccupied();
-         eachnode[index].createStartNode(a,index);
-         eachnode[startpoints[0]].removeNode(a,startpoints[0]);
-         eachnode[startpoints[0]].toggleOccupied();
-        startpoints[0]=startpoints[1];
-        startpoints.pop();
-        console.log(startpoints[0]);
-        }
-      }
-      else if (y==1) {
-        console.log(eachnode[index].walkable);
-        if(eachnode[index].occupied==false)
-      {
 
-        walls.push(index);
-        eachnode[index].createWall(a,index);
-        eachnode[index].toggleWalkable();
-        eachnode[index].toggleOccupied();
-        console.log(eachnode[index].walkable);
-      }
-        else if(eachnode[index].walkable==false)
+    a.forEach(function(button,index){
+      button.addEventListener('click',function(){
+        console.log("clicked");
+        console.log(y);
+        if(y==0)
         {
-          eachnode[index].removeNode(a,index);
-          eachnode[index].toggleOccupied();
+           console.log(eachnode[index].occupied);
+           console.log(index);
+           if(eachnode[index].occupied==false)
+           {
+             console.log("finally");
+           startpoints.push(index);
+           eachnode[index].toggleOccupied();
+           eachnode[index].createStartNode(a,index);
+           eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+           eachnode[startpoints[0]].toggleOccupied();
+          startpoints[0]=startpoints[1];
+          startpoints.pop();
+          console.log(startpoints[0]);
+          }
+        }
+        else if (y==1) {
+          console.log(eachnode[index].walkable);
+          if(eachnode[index].occupied==false)
+        {
+  
+          walls.push(index);
+          eachnode[index].createWall(a,index);
           eachnode[index].toggleWalkable();
+          eachnode[index].toggleOccupied();
           console.log(eachnode[index].walkable);
         }
-        
-      }
-      else if (y==2) {
-        if(eachnode[index].occupied==false)
-        {
-        stops.push(index);
-        eachnode[index].createStop(a,index);
-      }
-      }
-      else if (y==3) {
-        if(eachnode[index].occupied==false){
-        endpoints.push(index);
-        eachnode[index].toggleOccupied(a,index);
-        eachnode[index].createEndNode(a,index);
-        eachnode[endpoints[0]].removeNode(a,endpoints[0]);
-        eachnode[endpoints[0]].toggleOccupied();
-        endpoints[0]=endpoints[1];
-        endpoints.pop();
-      }
-      }
-      else if(y==7) {
-        
-        if(eachnode[index].occupied==false){
-          aliens.push(index);
-          alienpresent= true;
-          eachnode[index].toggleOccupied();
-          eachnode[index].createAlienNode(a,index);
-          if(aliens.length>1)
+          else if(eachnode[index].walkable==false)
           {
-            eachnode[aliens[0]].removeNode(a,aliens[0]);
-            eachnode[aliens[0]].toggleOccupied();
-            aliens[0]=aliens[1];
-            aliens.pop();
+            eachnode[index].removeNode(a,index);
+            eachnode[index].toggleOccupied();
+            eachnode[index].toggleWalkable();
+            console.log(eachnode[index].walkable);
           }
-        
+          
         }
-      }
-
-
-
-
-
-
+        else if (y==2) {
+          if(eachnode[index].occupied==false)
+          {
+            if(stops.length==0)
+            {
+  
+          stops.push(index);
+          eachnode[index].createStop(a,index);
+            eachnode[index].toggleOccupied();
+           }
+           else{
+             alert("more than one stop is not allowed");
+           }
+  
+        }
+        }
+        else if (y==3) {
+          if(eachnode[index].occupied==false){
+          endpoints.push(index);
+          eachnode[index].toggleOccupied(a,index);
+          eachnode[index].createEndNode(a,index);
+          eachnode[endpoints[0]].removeNode(a,endpoints[0]);
+          eachnode[endpoints[0]].toggleOccupied();
+          endpoints[0]=endpoints[1];
+          endpoints.pop();
+        }
+        }
+        else if(y==7) {
+          
+          if(eachnode[index].occupied==false){
+            aliens.push(index);
+            alienpresent= true;
+            eachnode[index].toggleOccupied();
+            eachnode[index].createAlienNode(a,index);
+            if(aliens.length>1)
+            {
+              eachnode[aliens[0]].removeNode(a,aliens[0]);
+              eachnode[aliens[0]].toggleOccupied();
+              aliens[0]=aliens[1];
+              aliens.pop();
+            }
+          
+          }
+        }
+  
+  
+  
+  
+  
+  
+      });
     });
+
+
   });
+  
 
 
 
-});
