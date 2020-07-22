@@ -625,6 +625,7 @@ $(document).ready(function() {
   var eachnode=[];
   var alienpresent= false;
   var allowDiagonal= false;
+  var indicate=0;
   startpoints.push(0);
 
   endpoints.push(size*size-1);
@@ -768,7 +769,10 @@ $(document).ready(function() {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
         else allowDiagonal=false;
+        indicate++;
         //console.log("hi " + stops.length);
+        if(indicate==1)
+        {
         if(stops.length==0)
         {
           astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
@@ -779,12 +783,18 @@ $(document).ready(function() {
           makenew(a,eachnode,size);
           astarSearch(a,eachnode,stops,endpoints,size,allowDiagonal,1);
         }
+      }else{
+        alert("Please click on New Grid to clear the grid");
+      }
 
       }
       else if(index==6) {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
         else allowDiagonal=false;
+        indicate++;
+        if(indicate==1)
+        {
         if(stops.length==0)
         {
         breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal);
@@ -795,6 +805,10 @@ $(document).ready(function() {
             makenew(a,eachnode,size);
             breadthFirstSearch(a,eachnode,stops,endpoints,size,allowDiagonal);
         }
+      }
+      else{
+          alert("Please click on New Grid to clear the grid");
+      }
 
       }
       else if(index==7)
