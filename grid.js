@@ -740,20 +740,24 @@ $(document).ready(function() {
             console.log(y);
             if(y==0)
             {
-              console.log(eachnode[index].occupied);
-              console.log(index);
-              if(eachnode[index].occupied==false)
+              if(indicate==0)
               {
-                console.log("finally");
-                startpoints.push(index);
-                eachnode[index].toggleOccupied();
-                eachnode[index].createStartNode(a,index);
-                eachnode[startpoints[0]].removeNode(a,startpoints[0]);
-                eachnode[startpoints[0]].toggleOccupied();
-                startpoints[0]=startpoints[1];
-                startpoints.pop();
-                console.log(startpoints[0]);
+                console.log(eachnode[index].occupied);
+                console.log(index);
+                if(eachnode[index].occupied==false)
+                {
+                  console.log("finally");
+                  startpoints.push(index);
+                  eachnode[index].toggleOccupied();
+                  eachnode[index].createStartNode(a,index);
+                  eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+                  eachnode[startpoints[0]].toggleOccupied();
+                  startpoints[0]=startpoints[1];
+                  startpoints.pop();
+                  console.log(startpoints[0]);
+                }
               }
+              
             }
             else if (y==1) 
             {
@@ -792,16 +796,20 @@ $(document).ready(function() {
             }
             else if (y==3) 
             {
-              if(eachnode[index].occupied==false)
+              if(indicate==0)
               {
-                endpoints.push(index);
-                eachnode[index].toggleOccupied(a,index);
-                eachnode[index].createEndNode(a,index);
-                eachnode[endpoints[0]].removeNode(a,endpoints[0]);
-                eachnode[endpoints[0]].toggleOccupied();
-                endpoints[0]=endpoints[1];
-                endpoints.pop();
+                if(eachnode[index].occupied==false)
+                {
+                  endpoints.push(index);
+                  eachnode[index].toggleOccupied(a,index);
+                  eachnode[index].createEndNode(a,index);
+                  eachnode[endpoints[0]].removeNode(a,endpoints[0]);
+                  eachnode[endpoints[0]].toggleOccupied();
+                  endpoints[0]=endpoints[1];
+                  endpoints.pop();
+                }
               }
+              
             }
             else if(y==7) 
             {
@@ -912,18 +920,22 @@ $(document).ready(function() {
       {
         console.log(eachnode[index].occupied);
         console.log(index);
-        if(eachnode[index].occupied==false)
+        if(indicate==0)
         {
-          console.log("finally");
-          startpoints.push(index);
-          eachnode[index].toggleOccupied();
-          eachnode[index].createStartNode(a,index);
-          eachnode[startpoints[0]].removeNode(a,startpoints[0]);
-          eachnode[startpoints[0]].toggleOccupied();
-          startpoints[0]=startpoints[1];
-          startpoints.pop();
-          console.log(startpoints[0]);
+          if(eachnode[index].occupied==false)
+          {
+            console.log("finally");
+            startpoints.push(index);
+            eachnode[index].toggleOccupied();
+            eachnode[index].createStartNode(a,index);
+            eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+            eachnode[startpoints[0]].toggleOccupied();
+            startpoints[0]=startpoints[1];
+            startpoints.pop();
+            console.log(startpoints[0]);
+          }
         }
+        
       }
       else if (y==1) 
       {
@@ -969,15 +981,18 @@ $(document).ready(function() {
       }
       else if (y==3) 
       {
-        if(eachnode[index].occupied==false)
+        if(indicate==0)
         {
-          endpoints.push(index);
-          eachnode[index].toggleOccupied(a,index);
-          eachnode[index].createEndNode(a,index);
-          eachnode[endpoints[0]].removeNode(a,endpoints[0]);
-          eachnode[endpoints[0]].toggleOccupied();
-          endpoints[0]=endpoints[1];
-          endpoints.pop();
+          if(eachnode[index].occupied==false)
+          {
+            endpoints.push(index);
+            eachnode[index].toggleOccupied(a,index);
+            eachnode[index].createEndNode(a,index);
+            eachnode[endpoints[0]].removeNode(a,endpoints[0]);
+            eachnode[endpoints[0]].toggleOccupied();
+            endpoints[0]=endpoints[1];
+            endpoints.pop();
+          }
         }
       }
       else if(y==7) 
