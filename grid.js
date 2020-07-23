@@ -668,7 +668,7 @@ $(document).ready(function() {
         size=refreshGrid();
         stops=[];
         walls=[];
-
+        indicate=0;
         createGrid(size);
         $(".grid").mouseover(function() {
             //$(this).css("background-color", "grey");
