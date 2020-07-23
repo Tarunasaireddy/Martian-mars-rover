@@ -1,4 +1,13 @@
 
+body{
+	background-color: rgb(143, 189, 199);
+}
+h3{
+	text-align: center;
+}
+.f{
+	text-align: center;
+}
 #container {
 	position: relative;
 	top: 30px;

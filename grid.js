@@ -623,7 +623,7 @@ $(document).ready(function() {
   var walls=[];
   var aliens=[];
   var y=-1;
-  var b=document.querySelectorAll('.b');
+  var b=document.querySelectorAll('.btn');
   var a=document.querySelectorAll('.grid');
   var tempnode;
   var eachnode=[];

@@ -4,28 +4,35 @@
   <head>
     <meta charset="utf-8">
     <title>Martian Rover</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="martian.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   	<script type="text/javascript" src="grid.js"></script>
   </head>
   <body>
-
+    <div class="container">
+      <div class="jumbotron">
    <h2>Select the Starting Point(Rover), Ending Point(Mars) and Obstacles </h2>
-   <button class="b" id="button1" >Start</button>
-   <button class="b" id="button2" >Obstacles</button>
-   <button class="b" id="button3" >Add Stop</button>
-   <button class="b" id="button4" >End</button>
-   <button class="b" id="button5" >New grid</button>
+   <button type="button" class="btn btn-default" id="button1" >Start</button>
+   <button type="button" class="btn btn-default" id="button2" >Obstacles</button>
+   <button type="button" class="btn btn-default" id="button3" >Add Stop</button>
+   <button type="button" class="btn btn-default"id="button4" >End</button>
+   <button type="button" class="btn btn-default" id="button5" >New grid</button>
    <br>
    <input type="checkbox" id="diagonal">Allow Diagonal Movement</input>
    <br>
    <h2>Select Algorithm to find shortest path(if no Aliens are present)</h2>
-   <button class="b" id="button6">AStarSearch</button>
-   <button class="b" id="button7">BreadthFirstSearch</button>
+   <button type="button" class="btn btn-default" id="button6">AStarSearch</button>
+   <button type="button" class="btn btn-default" id="button7">BreadthFirstSearch</button>
    <br>
    <h2>To know who will be successful in colonizing Mars, the Aliens or our Rover</h2>
-   <button class="b" id="button8">Add Alien</button>
-   <button class="b" id="button9">Safety Search</button>
+   <button type="button" class="btn btn-default" id="button8">Add Alien</button>
+   <button type="button" class="btn btn-default" id="button9">Safety Search</button>
+ </div>
+</div>
 
    <div id="container">
 
@@ -34,5 +41,6 @@
   </body>
 
   <footer>
-    <div>Created by<br/> Team Martian </div></footer>
+    <div class="container"><h3></br></br></br>Created by Team Martian</br></br></br></h3></div>
+  </footer>
 </html>
