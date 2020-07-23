@@ -701,6 +701,7 @@ $(document).ready(function() {
         size=refreshGrid();
         stops=[];
         walls=[];
+        alienpresent= false;
         indicate=0;
         createGrid(size);
         $(".grid").mouseover(function() {
@@ -757,11 +758,14 @@ $(document).ready(function() {
             {
               if(eachnode[index].occupied==false)
               {
-                walls.push(index);
-                eachnode[index].createWall(a,index);
-                eachnode[index].toggleWalkable();
-                eachnode[index].toggleOccupied();
-                console.log(eachnode[index].walkable);
+                if(indicate==0)
+                {
+                  walls.push(index);
+                  eachnode[index].createWall(a,index);
+                  eachnode[index].toggleWalkable();
+                  eachnode[index].toggleOccupied();
+                  console.log(eachnode[index].walkable);
+                }
               }
             }
 
@@ -772,12 +776,15 @@ $(document).ready(function() {
                 //console.log("hi");
                 if(stops.length==0)
                 {
+                  if(indicate==0)
+                  {
                   stops.push(index);
                   eachnode[index].createStop(a,index);
                   eachnode[index].toggleOccupied();
+                  }
                 }
                 else{
-                  alert("more than one stop is not allowed");
+                alert("more than one stop is not allowed");
                 }
 
               }
@@ -919,40 +926,39 @@ $(document).ready(function() {
         console.log(eachnode[index].walkable);
         if(eachnode[index].occupied==false)
         {
-          walls.push(index);
-          eachnode[index].createWall(a,index);
-          eachnode[index].toggleWalkable();
-          eachnode[index].toggleOccupied();
-          console.log(eachnode[index].walkable);
+          if(indicate==0)
+          {
+            walls.push(index);
+            eachnode[index].createWall(a,index);
+            eachnode[index].toggleWalkable();
+            eachnode[index].toggleOccupied();
+            console.log(eachnode[index].walkable);
+          }
         }
         else if(eachnode[index].walkable==false)
         {
-          eachnode[index].removeNode(a,index);
+          stops.push(index);
+          eachnode[index].createStop(a,index);
           eachnode[index].toggleOccupied();
-          eachnode[index].toggleWalkable();
-          console.log(eachnode[index].walkable);
         }
 
       }
       else if (y==2) 
       {
-        if(eachnode[index].occupied==false)
+        if(eachnode[index].occupied==false )
         {
           if(stops.length==0)
           {
-            stops.push(index);
-            eachnode[index].createStop(a,index);
-            eachnode[index].toggleOccupied();
+            if(indicate==0)
+            {
+              stops.push(index);
+              eachnode[index].createStop(a,index);
+              eachnode[index].toggleOccupied();
+            }
           }
           else
           {
-            stops.push(index);
-            eachnode[index].toggleOccupied();
-            eachnode[index].createStop(a,index);
-            eachnode[stops[0]].removeNode(a,stops[0]);
-            eachnode[stops[0]].toggleOccupied();
-            stops[0]=stops[1];
-            stops.pop();
+             alert("more than one stop is not allowed");
           }
 
         }
