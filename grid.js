@@ -728,12 +728,14 @@ $(document).ready(function() {
             else if (y==1) {
               if(eachnode[index].occupied==false)
               {
-
+                if(indicate==0)
+                {
                 walls.push(index);
                 eachnode[index].createWall(a,index);
                 eachnode[index].toggleWalkable();
                 eachnode[index].toggleOccupied();
                 console.log(eachnode[index].walkable);
+              }
               }
             }
 
@@ -743,9 +745,12 @@ $(document).ready(function() {
                 //console.log("hi");
                 if(stops.length==0)
                 {
+                  if(indicate==0)
+                  {
                 stops.push(index);
                 eachnode[index].createStop(a,index);
                 eachnode[index].toggleOccupied();
+               }
               }
               else{
                 alert("more than one stop is not allowed");
@@ -857,12 +862,15 @@ $(document).ready(function() {
           console.log(eachnode[index].walkable);
           if(eachnode[index].occupied==false)
         {
+          if(indicate==0)
+          {
 
           walls.push(index);
           eachnode[index].createWall(a,index);
           eachnode[index].toggleWalkable();
           eachnode[index].toggleOccupied();
           console.log(eachnode[index].walkable);
+        }
         }
           else if(eachnode[index].walkable==false)
           {
@@ -874,14 +882,16 @@ $(document).ready(function() {
 
         }
         else if (y==2) {
-          if(eachnode[index].occupied==false)
+          if(eachnode[index].occupied==false )
           {
             if(stops.length==0)
             {
-
+             if(indicate==0)
+             {
           stops.push(index);
           eachnode[index].createStop(a,index);
             eachnode[index].toggleOccupied();
+           }
            }
            else{
              alert("more than one stop is not allowed");
