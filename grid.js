@@ -595,6 +595,10 @@ function makenew(a,eachnode,size){
     eachnode[i].getHCost=Infinity;
     eachnode[i].parent_i=-1;
     eachnode[i].parent_j=-1;
+    eachnode[i].parent_ai=-1;
+    eachnode[i].parent_aj=-1;
+    eachnode[i].visited= false;
+    eachnode[i].alienvisited= false;
   }
 }
 
