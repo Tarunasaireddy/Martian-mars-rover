@@ -21,10 +21,7 @@ function refreshGrid(){
 class Node {
 
 constructor(size, posx, posy, walkable, startpoints,endpoints) {
-  var F;
 
-  var parent;
-  //this.a=a;
   this.inPath = false;
   this.getGCost = Infinity;
   this.getHCost = Infinity;
@@ -62,6 +59,7 @@ createAlienNode(a,index) {
 toggleWalkable() {
 
   this.walkable = !this.walkable;
+
 }
 
 createWall(a,index) {
@@ -74,22 +72,24 @@ createStop(a,index) {
     a[index].style.background="violet";
 
 }
-createpath(a,index){
+createpath(a,index) {
 
     a[index].style.background="black";
 
 }
-removeNode(a,index){
+removeNode(a,index) {
 
     a[index].style.background="";
 
 }
- toggleOccupied(){
+ toggleOccupied() {
 
     this.occupied=!this.occupied;
+
  }
 
 }
+
 //openlist
 class openList{
 constructor(f,row,col){
@@ -107,13 +107,11 @@ constructor(i,j) {
 }
 }
 
-
 function isValid(row, col, size)
 {
     return (row >= 0) && (row < size) &&
          (col >= 0) && (col < size);
 }
-
 
 function isDestionation( row, col, dest, size)
 {
@@ -122,10 +120,12 @@ function isDestionation( row, col, dest, size)
   else
       return (false);
 }
+
 function calculateHValue(row, col, dest, size)
 {
   return Math.sqrt((row-Math.floor(dest/size))*(row-Math.floor(dest/size))+ (col-Math.floor(dest%size))*(col-Math.floor(dest%size)));
 }
+
 // final path via parents
 function tracePath(a,eachnode,dest,size)
 {
@@ -158,21 +158,22 @@ function tracePath(a,eachnode,dest,size)
   return;
 }
 
-function findNeighbours(x,y,size,allowDiagonal){
+function findNeighbours(x,y,size,allowDiagonal)
+{
+  var neighbours= []
+  if(isValid(x-1,y,size)) neighbours.push([x-1,y]);
+  if(isValid(x,y+1,size)) neighbours.push([x,y+1]);
+  if(isValid(x+1,y,size)) neighbours.push([x+1,y]);
+  if(isValid(x,y-1,size)) neighbours.push([x,y-1]);
 
-var neighbours= []
-if(isValid(x-1,y,size)) neighbours.push([x-1,y]);
-if(isValid(x,y+1,size)) neighbours.push([x,y+1]);
-if(isValid(x+1,y,size)) neighbours.push([x+1,y]);
-if(isValid(x,y-1,size)) neighbours.push([x,y-1]);
-
-if(allowDiagonal==true){
-  if(isValid(x-1,y+1,size)) neighbours.push([x-1,y+1]);
-  if(isValid(x+1,y+1,size)) neighbours.push([x+1,y+1]);
-  if(isValid(x+1,y-1,size)) neighbours.push([x+1,y-1]);
-  if(isValid(x-1,y-1,size)) neighbours.push([x-1,y-1]);
-}
-return neighbours;
+  if(allowDiagonal==true)
+  {
+    if(isValid(x-1,y+1,size)) neighbours.push([x-1,y+1]);
+    if(isValid(x+1,y+1,size)) neighbours.push([x+1,y+1]);
+    if(isValid(x+1,y-1,size)) neighbours.push([x+1,y-1]);
+    if(isValid(x-1,y-1,size)) neighbours.push([x-1,y-1]); 
+  }
+  return neighbours;
 }
 
 
@@ -181,186 +182,190 @@ return neighbours;
 
 function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 {
+  // initialize start node
+  var i,j;
 
-
-// initialize start node
- var i,j;
-
- i=Math.floor(startpoints[0]/size);
- j=Math.floor(startpoints[0]%size);
- console.log(i);
- console.log(j);
- eachnode[startpoints[0]].getFCost=0;
- eachnode[startpoints[0]].getGCost=0;
- eachnode[startpoints[0]].getHCost=0;
- eachnode[startpoints[0]].parent_i=i;
- eachnode[startpoints[0]].parent_j=j;
- //Put the starting cell on the open list and set its
- var openset= new Set;
- openset.clear;
- var closedset=[];
- var closedtemp;
- var tempArray=[];
- for(var i1=0;i1<size;i1++)
- {
-   for(var j1=0;j1<size;j1++)
-   {
-   closedtemp = new closedList(i1,j1)
-   closedset.push(closedtemp);
-   }
- }
- var temp;
- temp =new openList(0,i,j)
- openset.add(temp);
- console.log(openset);
- var foundDest= false;
- while(openset.size>0)
- {
-   tempArray = Array.from(openset);
-   openset.delete(tempArray[0]);
-   i=tempArray[0].row;
-   j=tempArray[0].col;
-   closedset[i*size+j].value=true;
-
-
- var gnew, hnew, fnew;
-
-var neighbours= findNeighbours(i,j,size,allowDiagonal);
-
-
-for(next of neighbours){
- var x= next[0];
- var y= next[1];
- var ind= (x*size) + y;
- if(isValid(x,y,size)==true)
- {
-   if(isDestionation(x,y,endpoints,size)==true)
-
-   {
-     eachnode[ind].parent_i=i;
-     eachnode[ind].parent_j=j;
-     if(flag==1)
-       {
-       tracePath(a,eachnode, endpoints, size);
-       }
-     foundDest=true;
-     return;
-
-   }
-
- else if (closedset[ind].value==false && eachnode[ind].occupied==false) {
-
-    console.log("entered1");
-    gnew = eachnode[(i)*size+j].getGCost+1;
-    hnew = calculateHValue(x,y,endpoints,size);
-    fnew=gnew+hnew;
-    if (eachnode[ind].getFCost == Infinity ||  eachnode[ind].getFCost > fnew)
-             {
-                 temp=new openList(fnew,x,y);
-                 openset.add(temp);
-
-                 // Update the details of this cell
-                 eachnode[ind].getFCost = fnew;
-                 eachnode[ind].getGCost = gnew;
-                 eachnode[ind].getHCost = hnew;
-                 eachnode[ind].parent_i = i;
-                 eachnode[ind].parent_j = j;
-            }
+  i=Math.floor(startpoints[0]/size);
+  j=Math.floor(startpoints[0]%size);
+  console.log(i);
+  console.log(j);
+  eachnode[startpoints[0]].getFCost=0;
+  eachnode[startpoints[0]].getGCost=0;
+  eachnode[startpoints[0]].getHCost=0;
+  eachnode[startpoints[0]].parent_i=i;
+  eachnode[startpoints[0]].parent_j=j;
+  //Put the starting cell on the open list and set its
+  var openset= new Set;
+  openset.clear;
+  var closedset=[];
+  var closedtemp;
+  var tempArray=[];
+  for(var i1=0;i1<size;i1++)
+  {
+    for(var j1=0;j1<size;j1++)
+    {
+      closedtemp = new closedList(i1,j1)
+      closedset.push(closedtemp);
     }
-
   }
-}
+  var temp;
+  temp =new openList(0,i,j)
+  openset.add(temp);
+  console.log(openset);
+  var foundDest= false;
+  while(openset.size>0)
+  {
+    tempArray = Array.from(openset);
+    openset.delete(tempArray[0]);
+    i=tempArray[0].row;
+    j=tempArray[0].col;
+    closedset[i*size+j].value=true;
 
-}
-if (foundDest == false)
+    var gnew, hnew, fnew;
+
+    var neighbours= findNeighbours(i,j,size,allowDiagonal);
+
+    for(next of neighbours)
+    {
+      var x= next[0];
+      var y= next[1];
+      var ind= (x*size) + y;
+
+      if(isValid(x,y,size)==true)
+      {
+        if(isDestionation(x,y,endpoints,size)==true)
+        {
+          eachnode[ind].parent_i=i;
+          eachnode[ind].parent_j=j;
+          if(flag==1)
+          {
+            tracePath(a,eachnode, endpoints, size);
+          }
+          foundDest=true;
+          return;
+
+        }
+
+        else if (closedset[ind].value==false && eachnode[ind].occupied==false) 
+        {
+          console.log("entered1");
+          gnew = eachnode[(i)*size+j].getGCost+1;
+          hnew = calculateHValue(x,y,endpoints,size);
+          fnew=gnew+hnew;
+
+          if (eachnode[ind].getFCost == Infinity ||  eachnode[ind].getFCost > fnew)
+          {
+            temp=new openList(fnew,x,y);
+            openset.add(temp);
+
+            // Update the details of this cell
+            eachnode[ind].getFCost = fnew;
+            eachnode[ind].getGCost = gnew;
+            eachnode[ind].getHCost = hnew;
+            eachnode[ind].parent_i = i;
+            eachnode[ind].parent_j = j;
+          }
+        }
+      }
+    }
+  }
+
+  if (foundDest == false)
       alert("not found");
 
   return;
 }
 
 //implementation of a queue
-class Queue {
-constructor() {
+class Queue 
+{
+  constructor() {
     this.items=[];
- }
-enqueue(index) {
+  }
+  enqueue(index) {
     this.items.push(index);
-}
-dequeue(index) {
+  }
+  dequeue(index) {
     if(!this.isEmpty()) {
       return this.items.shift();
     }
-}
-front() {
+  }
+  front() {
     if(!this.isEmpty()) {
       return this.items[0];
     }
-}
-isEmpty() {
+  }
+  isEmpty() {
     return this.items.length==0;
-}
+  }
 
 }
 
 //breadthfirst search here
-function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal){
-var i,j;
-i=Math.floor(startpoints[0]/size);
-j=Math.floor(startpoints[0]%size);
+function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
+{
+  var i,j;
+  i=Math.floor(startpoints[0]/size);
+  j=Math.floor(startpoints[0]%size);
 
-var foundDest=false;
-var q=new Queue();
+  var foundDest=false;
+  var q=new Queue();
 
-//starting point is made parent of itself and added to the queue
-eachnode[startpoints[0]].parent_i=i;
-eachnode[startpoints[0]].parent_j=j;
+  //starting point is made parent of itself and added to the queue
+  eachnode[startpoints[0]].parent_i=i;
+  eachnode[startpoints[0]].parent_j=j;
 
-eachnode[startpoints[0]].visited=true;
-q.enqueue(startpoints[0]);
+  eachnode[startpoints[0]].visited=true;
+  q.enqueue(startpoints[0]);
 
-while(q.isEmpty()==false){
-  var current= q.front();
-  q.dequeue();
-  if(current==endpoints[0]){
-    foundDest=true;
-    return;
-  }
-  i= Math.floor(current/size);
-  j= Math.floor(current%size);
-
-  //valid neighbouring blocks of the current block are added to an array
-  var neighbours= findNeighbours(i,j,size,allowDiagonal);
-
-  for(next of neighbours){
-    var x= next[0];
-    var y= next[1];
-    var ind= (x*size) + y;
-
-    if(isDestionation(x,y,endpoints,size)==true){
-      eachnode[endpoints[0]].parent_i=i;
-      eachnode[endpoints[0]].parent_j=j;
-      tracePath(a,eachnode,endpoints,size);
+  while(q.isEmpty()==false)
+  {
+    var current= q.front();
+    q.dequeue();
+    if(current==endpoints[0])
+    {
       foundDest=true;
       return;
     }
+    i= Math.floor(current/size);
+    j= Math.floor(current%size);
 
-    //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
-    //its parent is the current block
-    else if(eachnode[ind].visited==false && eachnode[ind].occupied==false){
-      eachnode[ind].parent_i=i;
-      eachnode[ind].parent_j=j;
+    //valid neighbouring blocks of the current block are added to an array
+    var neighbours= findNeighbours(i,j,size,allowDiagonal);
 
-      eachnode[ind].visited=true;
-      q.enqueue(ind);
+    for(next of neighbours)
+    {
+      var x= next[0];
+      var y= next[1];
+      var ind= (x*size) + y;
+
+      if(isDestionation(x,y,endpoints,size)==true)
+      {
+        eachnode[endpoints[0]].parent_i=i;
+        eachnode[endpoints[0]].parent_j=j;
+        tracePath(a,eachnode,endpoints,size);
+        foundDest=true;
+        return;
+      } 
+
+      //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
+      //its parent is the current block
+      else if(eachnode[ind].visited==false && eachnode[ind].occupied==false)
+      {
+        eachnode[ind].parent_i=i;
+        eachnode[ind].parent_j=j;
+
+        eachnode[ind].visited=true;
+        q.enqueue(ind);
+      }
+
     }
 
   }
-
-}
-if(foundDest == false){
-  alert("not found");
-}
-return;
+  if(foundDest == false)
+    alert("not found");
+  
+  return;
 }
 
 // final alienpath via parents
@@ -407,187 +412,214 @@ function roverPath(a,eachnode,dest,size)
 }
 
 
-function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal) {
+function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal) 
+{
+  var distRover=0,distAlien=0;
+  var i,j,ai,aj;
 
-var distRover=0,distAlien=0;
-var i,j,ai,aj;
-i=Math.floor(startpoints[0]/size);
-j=Math.floor(startpoints[0]%size);
+  i=Math.floor(startpoints[0]/size);
+  j=Math.floor(startpoints[0]%size);
+  ai=Math.floor(aliens[0]/size);
+  aj=Math.floor(aliens[0]%size);
 
-ai=Math.floor(aliens[0]/size);
-aj=Math.floor(aliens[0]%size);
+  var foundRover=false;
+  var foundAlien=false;
 
-var foundRover=false;
-var foundAlien=false;
+  var roverpath,alienpath;
 
-var roverpath,alienpath;
+  var q=new Queue();
+  var aq=new Queue();
 
-var q=new Queue();
-var aq=new Queue();
+  //starting point is made parent of itself and added to the queue
+  eachnode[startpoints[0]].parent_i=i;
+  eachnode[startpoints[0]].parent_j=j;
 
-//starting point is made parent of itself and added to the queue
-eachnode[startpoints[0]].parent_i=i;
-eachnode[startpoints[0]].parent_j=j;
+  eachnode[startpoints[0]].visited=true;
+  q.enqueue(startpoints[0]);
 
-eachnode[startpoints[0]].visited=true;
-q.enqueue(startpoints[0]);
+  while(q.isEmpty()==false)
+  {
+    var current= q.front();
+    q.dequeue();
 
-while(q.isEmpty()==false){
-  var current= q.front();
-  q.dequeue();
+    i= Math.floor(current/size);
+    j= Math.floor(current%size);
 
-  i= Math.floor(current/size);
-  j= Math.floor(current%size);
-
-  if(isDestionation(i,j,endpoints,size)==true){
-    foundRover=true;
-    break;
-  }
-
-  //valid neighbouring blocks of the current block are added to an array
-  var neighbours= findNeighbours(i,j,size,allowDiagonal);
-
-  for(next of neighbours){
-    var x= next[0];
-    var y= next[1];
-    var ind= (x*size) + y;
-
-    if(isDestionation(x,y,endpoints,size)==true){
-      eachnode[endpoints[0]].parent_i=i;
-      eachnode[endpoints[0]].parent_j=j;
+    if(isDestionation(i,j,endpoints,size)==true)
+    {
       foundRover=true;
       break;
     }
 
-    //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
-    //its parent is the current block
-    else if(eachnode[ind].visited==false && eachnode[ind].occupied==false){
-      eachnode[ind].parent_i=i;
-      eachnode[ind].parent_j=j;
+    //valid neighbouring blocks of the current block are added to an array
+    var neighbours= findNeighbours(i,j,size,allowDiagonal);
 
-      eachnode[ind].visited=true;
-      q.enqueue(ind);
+    for(next of neighbours)
+    {
+      var x= next[0];
+      var y= next[1];
+      var ind= (x*size) + y;
+
+      if(isDestionation(x,y,endpoints,size)==true)
+      {
+        eachnode[endpoints[0]].parent_i=i;
+        eachnode[endpoints[0]].parent_j=j;
+        foundRover=true;
+        break;
+      }
+
+      //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
+      //its parent is the current block
+      else if(eachnode[ind].visited==false && eachnode[ind].occupied==false)
+      {
+        eachnode[ind].parent_i=i;
+        eachnode[ind].parent_j=j;
+
+        eachnode[ind].visited=true;
+        q.enqueue(ind);
+      }
+
     }
-
+    if(foundRover==true) break;
   }
-  if(foundRover==true) break;
-}
-if(foundRover == false){
-  distRover=0;
-}
-else{
-  roverpath=roverPath(a,eachnode,endpoints,size);
-  distRover=roverpath.length-2;
-}
-
-//starting point is made parent of itself and added to the queue
-eachnode[aliens[0]].parent_ai=ai;
-eachnode[aliens[0]].parent_aj=aj;
-
-eachnode[aliens[0]].alienvisited=true;
-aq.enqueue(aliens[0]);
-
-while(aq.isEmpty()==false){
-  var current= aq.front();
-  aq.dequeue();
-
-  ai= Math.floor(current/size);
-  aj= Math.floor(current%size);
-
-  if(isDestionation(ai,aj,endpoints,size)==true){
-    foundAlien=true;
-    break;
+  if(foundRover == false)
+  {
+    distRover=0;
   }
-  //valid neighbouring blocks of the current block are added to an array
-  var neighbours= findNeighbours(ai,aj,size,allowDiagonal);
+  else
+  {
+    roverpath=roverPath(a,eachnode,endpoints,size);
+    distRover=roverpath.length-2;
+  }
 
-  for(next of neighbours){
-    var x= next[0];
-    var y= next[1];
-    var ind= (x*size) + y;
+  //starting point is made parent of itself and added to the queue
+  eachnode[aliens[0]].parent_ai=ai;
+  eachnode[aliens[0]].parent_aj=aj;
 
-    if(isDestionation(x,y,endpoints,size)==true){
-      eachnode[endpoints[0]].parent_ai=ai;
-      eachnode[endpoints[0]].parent_aj=aj;
+  eachnode[aliens[0]].alienvisited=true;
+  aq.enqueue(aliens[0]);
+
+  while(aq.isEmpty()==false)
+  {
+    var current= aq.front();
+    aq.dequeue();
+
+    ai= Math.floor(current/size);
+    aj= Math.floor(current%size);
+
+    if(isDestionation(ai,aj,endpoints,size)==true)
+    {
       foundAlien=true;
       break;
     }
+    //valid neighbouring blocks of the current block are added to an array
+    var neighbours= findNeighbours(ai,aj,size,allowDiagonal);
 
-    //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
-    //its parent is the current block
-    else if(eachnode[ind].alienvisited==false && eachnode[ind].occupied==false){
-      eachnode[ind].parent_ai=ai;
-      eachnode[ind].parent_aj=aj;
+    for(next of neighbours)
+    {
+      var x= next[0];
+      var y= next[1];
+      var ind= (x*size) + y;
 
-      eachnode[ind].alienvisited=true;
-      aq.enqueue(ind);
+      if(isDestionation(x,y,endpoints,size)==true)
+      {
+        eachnode[endpoints[0]].parent_ai=ai;
+        eachnode[endpoints[0]].parent_aj=aj;
+        foundAlien=true;
+        break;
+      }
+
+      //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
+      //its parent is the current block
+      else if(eachnode[ind].alienvisited==false && eachnode[ind].occupied==false)
+      {
+        eachnode[ind].parent_ai=ai;
+        eachnode[ind].parent_aj=aj;
+
+        eachnode[ind].alienvisited=true;
+        aq.enqueue(ind);
+      }
+
+    }
+    if(foundAlien==true) break;
+  }
+  if(foundAlien == false)
+  {
+    distAlien=0;
+  }
+  else
+  {
+    alienpath=alienPath(a,eachnode,endpoints,size);
+    distAlien=alienpath.length-2;
+  }
+
+
+  if(distRover!=0 && distAlien!=0)
+  {
+    if(distRover<distAlien)
+    {
+      alert(`Rover Distance=${String(distRover)}  Alien Distance=${String(distAlien)}
+Our Rover will reach Mars first! :)`);
+      for(var i=1;i<=distRover;i++)
+      {
+        eachnode[roverpath[i]].createpath(a,roverpath[i]);
+      }
+    }
+    else if(distRover>distAlien)
+    {
+      alert(`Rover Distance=${String(distRover)}  Alien Distance=${String(distAlien)}
+The Aliens will reach Mars first! :(`);
+      for(var i=1;i<=distAlien;i++)
+      {
+        eachnode[alienpath[i]].createpath(a,alienpath[i]);
+      }
+
+    }
+    else
+    {
+      alert(`Rover Distance=${String(distRover)}  Alien Distance=${String(distAlien)}
+Both Rover and Aliens will reach Mars at the same time! Get ready for a BATTLE!!`);
+      for(var i=1;i<=distRover;i++)
+      {
+        eachnode[roverpath[i]].createpath(a,roverpath[i]);
+      }
+      for(var i=1;i<=distAlien;i++)
+      {
+        eachnode[alienpath[i]].createpath(a,alienpath[i]);
+      }
     }
 
   }
-  if(foundAlien==true) break;
+
+  else if(distRover==0 && distAlien==0)
+  {
+    alert("Neither our Rover nor the Aliens can reach Mars");
+  }
+
+  else if(distRover==0)
+  {
+    alert(`Alien Distance=${String(distAlien)}
+The Aliens will reach Mars but our Rover cannot :(`);
+    for(var i=1;i<=distAlien;i++)
+    {
+      eachnode[alienpath[i]].createpath(a,alienpath[i]);
+    }
+  }
+
+  else if(distAlien==0)
+  {
+    alert(`Rover Distance=${String(distRover)}
+Our Rover will reach Mars but the Aliens cannot :)`);
+    for(var i=1;i<=distRover;i++)
+    {
+      eachnode[roverpath[i]].createpath(a,roverpath[i]);
+    }
+  }
 }
-if(foundAlien == false){
-  distAlien=0;
-}
-else
+
+
+function makenew(a,eachnode,size)
 {
-  alienpath=alienPath(a,eachnode,endpoints,size);
-  distAlien=alienpath.length-2;
-}
-
-
-if(distRover!=0 && distAlien!=0){
-  console.log("rover dist="+String(distRover));
-  console.log("alien dist="+String(distAlien));
-  if(distRover<distAlien){
-    alert("Our Rover will reach Mars first! :)");
-    for(var i=1;i<=distRover;i++)
-    {
-      eachnode[roverpath[i]].createpath(a,roverpath[i]);
-    }
-  }
-  else if(distRover>distAlien){
-    alert("The Aliens will reach Mars first! :(");
-    for(var i=1;i<=distAlien;i++)
-    {
-      eachnode[alienpath[i]].createpath(a,alienpath[i]);
-    }
-
-  }
-  else{
-    alert("both rover and aliens will reach Mars at the same time! Get ready for a BATTLE!!");
-    for(var i=1;i<=distRover;i++)
-    {
-      eachnode[roverpath[i]].createpath(a,roverpath[i]);
-    }
-    for(var i=1;i<=distAlien;i++)
-    {
-      eachnode[alienpath[i]].createpath(a,alienpath[i]);
-    }
-  }
-
-}
-else if(distRover==0 && distAlien==0){
-  alert("Neither our Rover nor the Aliens can reach Mars");
-}
-else if(distRover==0){
-  alert("The Aliens will reach Mars but our Rover cannot :(");
-  for(var i=1;i<=distAlien;i++)
-  {
-    eachnode[alienpath[i]].createpath(a,alienpath[i]);
-  }
-}
-else if(distAlien==0){
-  alert("Our Rover will reach Mars but the aliens cannot :)");
-  for(var i=1;i<=distRover;i++)
-  {
-    eachnode[roverpath[i]].createpath(a,roverpath[i]);
-  }
-}
-}
-
-
-function makenew(a,eachnode,size){
   for(var i=0;i<size*size;i++)
   {
     eachnode[i].getFCost=Infinity;
@@ -638,15 +670,12 @@ $(document).ready(function() {
   {
     for(var j=0;j<size;j++)
     {
-
-        a[size*i+j].style.background="white";
+      a[size*i+j].style.background="white";
       tempnode= new Node(size,i,j,true,startpoints,endpoints);
-
       console.log(tempnode.occupied)
       eachnode.push(tempnode);
     }
     console.log("success");
-
   }
   a[0].style.background="green";
   a[size*size-1].style.background="red";
@@ -690,7 +719,6 @@ $(document).ready(function() {
         {
           for(var j=0;j<size;j++)
           {
-
             a[size*i+j].style.background="white";
             tempnode= new Node(size,i,j,true,startpoints,endpoints);
 
@@ -698,8 +726,8 @@ $(document).ready(function() {
             eachnode.push(tempnode);
           }
           console.log("success");
-
         }
+
         a[0].style.background="green";
         a[size*size-1].style.background="red";
         eachnode[0].toggleOccupied();
@@ -710,25 +738,25 @@ $(document).ready(function() {
             console.log(y);
             if(y==0)
             {
-               console.log(eachnode[index].occupied);
-               console.log(index);
-               if(eachnode[index].occupied==false)
-               {
-                 console.log("finally");
-               startpoints.push(index);
-               eachnode[index].toggleOccupied();
-               eachnode[index].createStartNode(a,index);
-               eachnode[startpoints[0]].removeNode(a,startpoints[0]);
-               eachnode[startpoints[0]].toggleOccupied();
-              startpoints[0]=startpoints[1];
-              startpoints.pop();
-              console.log(startpoints[0]);
-              }
-            }
-            else if (y==1) {
+              console.log(eachnode[index].occupied);
+              console.log(index);
               if(eachnode[index].occupied==false)
               {
-
+                console.log("finally");
+                startpoints.push(index);
+                eachnode[index].toggleOccupied();
+                eachnode[index].createStartNode(a,index);
+                eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+                eachnode[startpoints[0]].toggleOccupied();
+                startpoints[0]=startpoints[1];
+                startpoints.pop();
+                console.log(startpoints[0]);
+              }
+            }
+            else if (y==1) 
+            {
+              if(eachnode[index].occupied==false)
+              {
                 walls.push(index);
                 eachnode[index].createWall(a,index);
                 eachnode[index].toggleWalkable();
@@ -737,24 +765,27 @@ $(document).ready(function() {
               }
             }
 
-            else if (y==2) {
-                if(eachnode[index].occupied==false)
-                {
+            else if (y==2) 
+            {
+              if(eachnode[index].occupied==false)
+              {
                 //console.log("hi");
                 if(stops.length==0)
                 {
-                stops.push(index);
-                eachnode[index].createStop(a,index);
-                eachnode[index].toggleOccupied();
-              }
-              else{
-                alert("more than one stop is not allowed");
-              }
+                  stops.push(index);
+                  eachnode[index].createStop(a,index);
+                  eachnode[index].toggleOccupied();
+                }
+                else{
+                  alert("more than one stop is not allowed");
+                }
 
               }
             }
-            else if (y==3) {
-                if(eachnode[index].occupied==false){
+            else if (y==3) 
+            {
+              if(eachnode[index].occupied==false)
+              {
                 endpoints.push(index);
                 eachnode[index].toggleOccupied(a,index);
                 eachnode[index].createEndNode(a,index);
@@ -762,6 +793,24 @@ $(document).ready(function() {
                 eachnode[endpoints[0]].toggleOccupied();
                 endpoints[0]=endpoints[1];
                 endpoints.pop();
+              }
+            }
+            else if(y==7) 
+            {
+              if(eachnode[index].occupied==false)
+              {
+                aliens.push(index);
+                alienpresent= true;
+                eachnode[index].toggleOccupied();
+                eachnode[index].createAlienNode(a,index);
+                if(aliens.length>1)
+                {
+                  eachnode[aliens[0]].removeNode(a,aliens[0]);
+                  eachnode[aliens[0]].toggleOccupied();
+                  aliens[0]=aliens[1];
+                  aliens.pop();
+                }
+    
               }
             }
 
@@ -777,21 +826,23 @@ $(document).ready(function() {
         //console.log("hi " + stops.length);
         if(indicate==1)
         {
-        if(stops.length==0)
-        {
-          astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
+          if(stops.length==0)
+          {
+            astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
+          }
+          else 
+          {
+            astarSearch(a,eachnode,startpoints,stops,size,allowDiagonal,1);
+            makenew(a,eachnode,size);
+            astarSearch(a,eachnode,stops,endpoints,size,allowDiagonal,1);
+          }
         }
-        else {
+        else{
+          alert("Please click on New Grid to clear the grid");
+        }
 
-          astarSearch(a,eachnode,startpoints,stops,size,allowDiagonal,1);
-          makenew(a,eachnode,size);
-          astarSearch(a,eachnode,stops,endpoints,size,allowDiagonal,1);
-        }
-      }else{
-        alert("Please click on New Grid to clear the grid");
       }
 
-      }
       else if(index==6) {
         var diag= document.getElementById("diagonal");
         if(diag.checked==true) allowDiagonal=true;
@@ -799,22 +850,23 @@ $(document).ready(function() {
         indicate++;
         if(indicate==1)
         {
-        if(stops.length==0)
-        {
-        breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal);
-        }
-        else{
-
+          if(stops.length==0)
+          {
+            breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal);
+          }
+          else
+          {
             breadthFirstSearch(a,eachnode,startpoints,stops,size,allowDiagonal);
             makenew(a,eachnode,size);
             breadthFirstSearch(a,eachnode,stops,endpoints,size,allowDiagonal);
+          }
         }
-      }
-      else{
+        else{
           alert("Please click on New Grid to clear the grid");
-      }
+        }
 
       }
+
       else if(index==7)
       {
         y=7;
@@ -826,71 +878,89 @@ $(document).ready(function() {
           var diag= document.getElementById("diagonal");
           if(diag.checked==true) allowDiagonal=true;
           else allowDiagonal=false;
-          safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal);
+          indicate++;
+          if(indicate==1)
+          {
+            safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal);
+          }
+          else
+          {
+            alert("Please click on New Grid to clear the grid");
+          }
+          
         }
       }
-      });
     });
+  });
 
-    a.forEach(function(button,index){
-      button.addEventListener('click',function(){
-        console.log("clicked");
-        console.log(y);
-        if(y==0)
+  a.forEach(function(button,index){
+    button.addEventListener('click',function(){
+      console.log("clicked");
+      console.log(y);
+      if(y==0)
+      {
+        console.log(eachnode[index].occupied);
+        console.log(index);
+        if(eachnode[index].occupied==false)
         {
-           console.log(eachnode[index].occupied);
-           console.log(index);
-           if(eachnode[index].occupied==false)
-           {
-             console.log("finally");
-           startpoints.push(index);
-           eachnode[index].toggleOccupied();
-           eachnode[index].createStartNode(a,index);
-           eachnode[startpoints[0]].removeNode(a,startpoints[0]);
-           eachnode[startpoints[0]].toggleOccupied();
+          console.log("finally");
+          startpoints.push(index);
+          eachnode[index].toggleOccupied();
+          eachnode[index].createStartNode(a,index);
+          eachnode[startpoints[0]].removeNode(a,startpoints[0]);
+          eachnode[startpoints[0]].toggleOccupied();
           startpoints[0]=startpoints[1];
           startpoints.pop();
           console.log(startpoints[0]);
-          }
         }
-        else if (y==1) {
-          console.log(eachnode[index].walkable);
-          if(eachnode[index].occupied==false)
+      }
+      else if (y==1) 
+      {
+        console.log(eachnode[index].walkable);
+        if(eachnode[index].occupied==false)
         {
-
           walls.push(index);
           eachnode[index].createWall(a,index);
           eachnode[index].toggleWalkable();
           eachnode[index].toggleOccupied();
           console.log(eachnode[index].walkable);
         }
-          else if(eachnode[index].walkable==false)
+        else if(eachnode[index].walkable==false)
+        {
+          eachnode[index].removeNode(a,index);
+          eachnode[index].toggleOccupied();
+          eachnode[index].toggleWalkable();
+          console.log(eachnode[index].walkable);
+        }
+
+      }
+      else if (y==2) 
+      {
+        if(eachnode[index].occupied==false)
+        {
+          if(stops.length==0)
           {
-            eachnode[index].removeNode(a,index);
+            stops.push(index);
+            eachnode[index].createStop(a,index);
             eachnode[index].toggleOccupied();
-            eachnode[index].toggleWalkable();
-            console.log(eachnode[index].walkable);
+          }
+          else
+          {
+            stops.push(index);
+            eachnode[index].toggleOccupied();
+            eachnode[index].createStop(a,index);
+            eachnode[stops[0]].removeNode(a,stops[0]);
+            eachnode[stops[0]].toggleOccupied();
+            stops[0]=stops[1];
+            stops.pop();
           }
 
         }
-        else if (y==2) {
-          if(eachnode[index].occupied==false)
-          {
-            if(stops.length==0)
-            {
-
-          stops.push(index);
-          eachnode[index].createStop(a,index);
-            eachnode[index].toggleOccupied();
-           }
-           else{
-             alert("more than one stop is not allowed");
-           }
-
-        }
-        }
-        else if (y==3) {
-          if(eachnode[index].occupied==false){
+      }
+      else if (y==3) 
+      {
+        if(eachnode[index].occupied==false)
+        {
           endpoints.push(index);
           eachnode[index].toggleOccupied(a,index);
           eachnode[index].createEndNode(a,index);
@@ -899,32 +969,33 @@ $(document).ready(function() {
           endpoints[0]=endpoints[1];
           endpoints.pop();
         }
-        }
-        else if(y==7) {
-
-          if(eachnode[index].occupied==false){
-            aliens.push(index);
-            alienpresent= true;
-            eachnode[index].toggleOccupied();
-            eachnode[index].createAlienNode(a,index);
-            if(aliens.length>1)
-            {
-              eachnode[aliens[0]].removeNode(a,aliens[0]);
-              eachnode[aliens[0]].toggleOccupied();
-              aliens[0]=aliens[1];
-              aliens.pop();
-            }
-
+      }
+      else if(y==7) 
+      {
+        if(eachnode[index].occupied==false)
+        {
+          aliens.push(index);
+          alienpresent= true;
+          eachnode[index].toggleOccupied();
+          eachnode[index].createAlienNode(a,index);
+          if(aliens.length>1)
+          {
+            eachnode[aliens[0]].removeNode(a,aliens[0]);
+            eachnode[aliens[0]].toggleOccupied();
+            aliens[0]=aliens[1];
+            aliens.pop();
           }
+
         }
+      }
 
 
 
 
 
 
-      });
     });
-
-
   });
+
+
+});
