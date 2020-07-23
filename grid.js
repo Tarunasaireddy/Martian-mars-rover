@@ -701,6 +701,7 @@ $(document).ready(function() {
         size=refreshGrid();
         stops=[];
         walls=[];
+        aliens=[];
         alienpresent= false;
         indicate=0;
         createGrid(size);
@@ -806,6 +807,8 @@ $(document).ready(function() {
             {
               if(eachnode[index].occupied==false)
               {
+                if(indicate==0)
+                {
                 aliens.push(index);
                 alienpresent= true;
                 eachnode[index].toggleOccupied();
@@ -816,6 +819,7 @@ $(document).ready(function() {
                   eachnode[aliens[0]].toggleOccupied();
                   aliens[0]=aliens[1];
                   aliens.pop();
+                }
                 }
     
               }
@@ -978,6 +982,7 @@ $(document).ready(function() {
       }
       else if(y==7) 
       {
+        if(indicate==0){
         if(eachnode[index].occupied==false)
         {
           aliens.push(index);
@@ -992,6 +997,7 @@ $(document).ready(function() {
             aliens.pop();
           }
 
+        }
         }
       }
 
