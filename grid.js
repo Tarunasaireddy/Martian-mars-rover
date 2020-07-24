@@ -17,7 +17,7 @@ function refreshGrid(){
   return z;
 };
 
-// Consider each block of the grid as a Node 
+// Consider each block of the grid as a Node
 class Node {
 
   constructor(size, posx, posy, walkable, startpoints,endpoints) {
@@ -46,7 +46,7 @@ class Node {
     a[index].style.background="green";
   }
 
-  //Creating the Ending Node  
+  //Creating the Ending Node
   createEndNode(a,index) {
     a[index].style.background="red";
   }
@@ -76,12 +76,12 @@ class Node {
     a[index].style.background="";
   }
 
-  //Changing the state of walkability 
+  //Changing the state of walkability
   toggleWalkable() {
     this.walkable = !this.walkable;
   }
 
-  //Changing the state of occupied  
+  //Changing the state of occupied
   toggleOccupied() {
     this.occupied=!this.occupied;
   }
@@ -196,7 +196,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
   eachnode[startpoints[0]].getHCost=0;
   eachnode[startpoints[0]].parent_i=i;
   eachnode[startpoints[0]].parent_j=j;
-  //Put the starting cell on the open list 
+  //Put the starting cell on the open list
   var openset= new Set;
   openset.clear;
   var closedset=[];
@@ -325,7 +325,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
   //continues till q is not empty
   while(q.isEmpty()==false)
   {
-    //takes out the current front node 
+    //takes out the current front node
     var current= q.front();
     q.dequeue();
 
@@ -346,8 +346,8 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
       var x= next[0];
       var y= next[1];
       var ind= (x*size) + y;
-      
-      //if destination is reached, path is traced 
+
+      //if destination is reached, path is traced
       if(isDestionation(x,y,endpoints,size)==true)
       {
         eachnode[endpoints[0]].parent_i=i;
@@ -452,7 +452,7 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
   //continues till q is not empty
   while(q.isEmpty()==false)
   {
-    //takes out the current front node 
+    //takes out the current front node
     var current= q.front();
     q.dequeue();
 
@@ -816,7 +816,7 @@ $(document).ready(function() {
                   eachnode[index].toggleOccupied();
                   eachnode[index].toggleWalkable();
                   console.log(eachnode[index].walkable);
-                } 
+                }
               }
               else{
                 alert("Create New Grid to clear the path");
