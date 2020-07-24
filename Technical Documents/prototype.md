@@ -9,9 +9,13 @@
 3. Key Properties(not all) of different types of Nodes on the grid:
 
     <b>Start</b>: Red, Walkable, Occupied
+
     <b>End</b>: Green, Walkable, Occupied
+
     <b>Obstacle</b>: Grey, Not Walkable, Occupied
+
     <b>Stop</b>: Violet, Walkable, Occupied
+    
     <b>Alien</b>: Yellow, Walkable, Occupied
 
 4. Initially, the Start node is at (0,0) position and End Node is at ((size-1),(size-1)) position.
