@@ -22,4 +22,4 @@
 
 5. The blocks which are part of the shortest path are highlighted in black colour.
 
-6. We have used <b>A* star</b> and <b>Breadth first search</b> to find the shortest path.
+6. We have used <b>A star</b> and <b>Breadth first search</b> to find the shortest path.
