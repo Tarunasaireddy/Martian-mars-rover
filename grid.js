@@ -171,7 +171,7 @@ function findNeighbours(x,y,size,allowDiagonal)
     if(isValid(x-1,y+1,size)) neighbours.push([x-1,y+1]);
     if(isValid(x+1,y+1,size)) neighbours.push([x+1,y+1]);
     if(isValid(x+1,y-1,size)) neighbours.push([x+1,y-1]);
-    if(isValid(x-1,y-1,size)) neighbours.push([x-1,y-1]); 
+    if(isValid(x-1,y-1,size)) neighbours.push([x-1,y-1]);
   }
   return neighbours;
 }
@@ -246,7 +246,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 
         }
 
-        else if (closedset[ind].value==false && eachnode[ind].occupied==false) 
+        else if (closedset[ind].value==false && eachnode[ind].occupied==false)
         {
           console.log("entered1");
           gnew = eachnode[(i)*size+j].getGCost+1;
@@ -277,7 +277,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 }
 
 //implementation of a queue
-class Queue 
+class Queue
 {
   constructor() {
     this.items=[];
@@ -346,7 +346,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
         tracePath(a,eachnode,endpoints,size);
         foundDest=true;
         return;
-      } 
+      }
 
       //if a neighbour is not visited yet and is unoccupied, it is marked visited and added to the queue
       //its parent is the current block
@@ -364,7 +364,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
   }
   if(foundDest == false)
     alert("not found");
-  
+
   return;
 }
 
@@ -412,7 +412,7 @@ function roverPath(a,eachnode,dest,size)
 }
 
 
-function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal) 
+function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal)
 {
   var distRover=0,distAlien=0;
   var i,j,ai,aj;
@@ -740,10 +740,10 @@ $(document).ready(function() {
             console.log(y);
             if(y==0)
             {
+              console.log(eachnode[index].occupied);
+              console.log(index);
               if(indicate==0)
               {
-                console.log(eachnode[index].occupied);
-                console.log(index);
                 if(eachnode[index].occupied==false)
                 {
                   console.log("finally");
@@ -757,44 +757,60 @@ $(document).ready(function() {
                   console.log(startpoints[0]);
                 }
               }
-              
+              else {
+                alert("Create New Grid to clear the path");
+              }
+
             }
-            else if (y==1) 
+            else if (y==1)
             {
+              console.log(eachnode[index].walkable);
+             if(indicate==0)
+             {
               if(eachnode[index].occupied==false)
               {
-                if(indicate==0)
-                {
+
+
                   walls.push(index);
                   eachnode[index].createWall(a,index);
                   eachnode[index].toggleWalkable();
                   eachnode[index].toggleOccupied();
                   console.log(eachnode[index].walkable);
-                }
+
+              }
+              else if(eachnode[index].walkable==false)
+              {
+                  eachnode[index].removeNode(a,index);
+                  eachnode[index].toggleOccupied();
+                  eachnode[index].toggleWalkable();
+                  console.log(eachnode[index].walkable);
               }
             }
-
-            else if (y==2) 
+            else{
+              alert("Create New Grid to clear the path");
+            }
+            }
+            else if (y==2)
             {
-              if(eachnode[index].occupied==false)
+              if(eachnode[index].occupied==false )
               {
-                //console.log("hi");
                 if(stops.length==0)
                 {
                   if(indicate==0)
                   {
-                  stops.push(index);
-                  eachnode[index].createStop(a,index);
-                  eachnode[index].toggleOccupied();
+                    stops.push(index);
+                    eachnode[index].createStop(a,index);
+                    eachnode[index].toggleOccupied();
                   }
                 }
-                else{
-                alert("more than one stop is not allowed");
+                else
+                {
+                   alert("more than one stop is not allowed");
                 }
 
               }
             }
-            else if (y==3) 
+            else if (y==3)
             {
               if(indicate==0)
               {
@@ -809,14 +825,15 @@ $(document).ready(function() {
                   endpoints.pop();
                 }
               }
-              
+              else{
+                alert("Create New Grid to clear the path");
+              }
             }
-            else if(y==7) 
+            else if(y==7)
             {
+              if(indicate==0){
               if(eachnode[index].occupied==false)
               {
-                if(indicate==0)
-                {
                 aliens.push(index);
                 alienpresent= true;
                 eachnode[index].toggleOccupied();
@@ -828,10 +845,15 @@ $(document).ready(function() {
                   aliens[0]=aliens[1];
                   aliens.pop();
                 }
-                }
-    
+
+              }
               }
             }
+
+
+
+
+
 
           });
         });
@@ -849,7 +871,7 @@ $(document).ready(function() {
           {
             astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,1);
           }
-          else 
+          else
           {
             astarSearch(a,eachnode,startpoints,stops,size,allowDiagonal,1);
             makenew(a,eachnode,size);
@@ -906,7 +928,7 @@ $(document).ready(function() {
           {
             alert("Please click on New Grid to clear the grid");
           }
-          
+
         }
       }
     });
@@ -935,21 +957,26 @@ $(document).ready(function() {
             console.log(startpoints[0]);
           }
         }
-        
+        else {
+          alert("Create New Grid to clear the path");
+        }
+
       }
-      else if (y==1) 
+      else if (y==1)
       {
         console.log(eachnode[index].walkable);
+       if(indicate==0)
+       {
         if(eachnode[index].occupied==false)
         {
-          if(indicate==0)
-          {
+
+
             walls.push(index);
             eachnode[index].createWall(a,index);
             eachnode[index].toggleWalkable();
             eachnode[index].toggleOccupied();
             console.log(eachnode[index].walkable);
-          }
+
         }
         else if(eachnode[index].walkable==false)
         {
@@ -958,9 +985,12 @@ $(document).ready(function() {
             eachnode[index].toggleWalkable();
             console.log(eachnode[index].walkable);
         }
-
       }
-      else if (y==2) 
+      else{
+        alert("Create New Grid to clear the path");
+      }
+      }
+      else if (y==2)
       {
         if(eachnode[index].occupied==false )
         {
@@ -980,7 +1010,7 @@ $(document).ready(function() {
 
         }
       }
-      else if (y==3) 
+      else if (y==3)
       {
         if(indicate==0)
         {
@@ -995,8 +1025,11 @@ $(document).ready(function() {
             endpoints.pop();
           }
         }
+        else{
+          alert("Create New Grid to clear the path");
+        }
       }
-      else if(y==7) 
+      else if(y==7)
       {
         if(indicate==0){
         if(eachnode[index].occupied==false)
