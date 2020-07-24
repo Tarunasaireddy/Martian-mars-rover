@@ -7,7 +7,7 @@ Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final dest
 
 1. The rover may have to pass through a stop before reaching Mars, in order to stay their for some time and collect some information about that place in space.
 2. If Aliens are also on their way to colonize Mars, our Rover will make a Safety Search to know before hand about who will be successful, and get ready for a possible battle if both of them reach Mars at the same time. In this case the Rover doesn't go through the stop as its first priority is to reach Mars as soon as possible. 
-3. The grid size can be changed by user input through the New Grid button.
+3. Number of boxes per side can be changed by user input through the New Grid button which helps in finding distance with high precision with increase in boxes per side.
 
 
 # Instructions and Description of the available buttons:
