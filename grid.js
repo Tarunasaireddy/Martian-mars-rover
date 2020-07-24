@@ -953,9 +953,10 @@ $(document).ready(function() {
         }
         else if(eachnode[index].walkable==false)
         {
-          stops.push(index);
-          eachnode[index].createStop(a,index);
-          eachnode[index].toggleOccupied();
+            eachnode[index].removeNode(a,index);
+            eachnode[index].toggleOccupied();
+            eachnode[index].toggleWalkable();
+            console.log(eachnode[index].walkable);
         }
 
       }
