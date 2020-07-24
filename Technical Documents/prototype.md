@@ -18,6 +18,8 @@
 
     <b>Alien</b>: Yellow, Walkable, Occupied
 
-4. Initially, the Start node is at (0,0) position and End Node is at ((size-1),(size-1)) position.
+4. Initially, the Start node is at <i>top-Left corner</i> of the grid and End Node is at <i>bottom-right corner</i> of the grid.
 
 5. The blocks which are part of the shortest path are highlighted in black colour.
+
+6. We have used <i>A* star</i> and <i>Breath first search</i> to find the shortest path.
