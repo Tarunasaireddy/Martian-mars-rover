@@ -771,54 +771,50 @@ $(document).ready(function() {
             else if (y==1)
             {
               console.log(eachnode[index].walkable);
-             if(indicate==0)
-             {
-              if(eachnode[index].occupied==false)
+              if(indicate==0)
               {
-
-
+                if(eachnode[index].occupied==false)
+                {
                   walls.push(index);
                   eachnode[index].createWall(a,index);
                   eachnode[index].toggleWalkable();
                   eachnode[index].toggleOccupied();
                   console.log(eachnode[index].walkable);
 
-              }
-              else if(eachnode[index].walkable==false)
-              {
+                }
+                else if(eachnode[index].walkable==false)
+                {
                   eachnode[index].removeNode(a,index);
                   eachnode[index].toggleOccupied();
                   eachnode[index].toggleWalkable();
                   console.log(eachnode[index].walkable);
+                } 
               }
-            }
-            else{
-              alert("Create New Grid to clear the path");
-            }
+              else{
+                alert("Create New Grid to clear the path");
+              }
             }
             else if (y==2)
             {
               if(eachnode[index].occupied==false )
               {
                 if(indicate==0)
-              {
-                if(stops.length==0)
                 {
+                  if(stops.length==0)
+                  {
 
                     stops.push(index);
                     eachnode[index].createStop(a,index);
                     eachnode[index].toggleOccupied();
                   }
-
-
-                else
-                {
-                   alert("more than one stop is not allowed");
+                  else
+                  {
+                    alert("more than one stop is not allowed");
+                  }
                 }
-              }
-              else{
-                alert("Create New Grid to clear the path");
-              }
+                else{
+                  alert("Create New Grid to clear the path");
+                }
 
               }
             }
@@ -843,22 +839,26 @@ $(document).ready(function() {
             }
             else if(y==7)
             {
-              if(indicate==0){
-              if(eachnode[index].occupied==false)
+              if(indicate==0)
               {
-                aliens.push(index);
-                alienpresent= true;
-                eachnode[index].toggleOccupied();
-                eachnode[index].createAlienNode(a,index);
-                if(aliens.length>1)
+                if(eachnode[index].occupied==false)
                 {
-                  eachnode[aliens[0]].removeNode(a,aliens[0]);
-                  eachnode[aliens[0]].toggleOccupied();
-                  aliens[0]=aliens[1];
-                  aliens.pop();
-                }
+                  aliens.push(index);
+                  alienpresent= true;
+                  eachnode[index].toggleOccupied();
+                  eachnode[index].createAlienNode(a,index);
+                  if(aliens.length>1)
+                  {
+                    eachnode[aliens[0]].removeNode(a,aliens[0]);
+                    eachnode[aliens[0]].toggleOccupied();
+                    aliens[0]=aliens[1];
+                    aliens.pop();
+                  }
 
+                }
               }
+              else{
+                alert("Create New Grid to clear the path");
               }
             }
 
@@ -972,30 +972,29 @@ $(document).ready(function() {
       else if (y==1)
       {
         console.log(eachnode[index].walkable);
-       if(indicate==0)
-       {
-        if(eachnode[index].occupied==false)
+        if(indicate==0)
         {
-
-
+          if(eachnode[index].occupied==false)
+          {
             walls.push(index);
             eachnode[index].createWall(a,index);
             eachnode[index].toggleWalkable();
             eachnode[index].toggleOccupied();
             console.log(eachnode[index].walkable);
 
-        }
-        else if(eachnode[index].walkable==false)
-        {
+          }
+          else if(eachnode[index].walkable==false)
+          {
             eachnode[index].removeNode(a,index);
             eachnode[index].toggleOccupied();
             eachnode[index].toggleWalkable();
             console.log(eachnode[index].walkable);
+          }
         }
-      }
-      else{
-        alert("Create New Grid to clear the path");
-      }
+        else
+        {
+          alert("Create New Grid to clear the path");
+        }
       }
       else if (y==2)
       {
@@ -1003,22 +1002,22 @@ $(document).ready(function() {
         {
           if(indicate==0)
           {
-          if(stops.length==0)
-          {
+            if(stops.length==0)
+            {
 
               stops.push(index);
               eachnode[index].createStop(a,index);
               eachnode[index].toggleOccupied();
 
+            }
+            else
+            {
+              alert("more than one stop is not allowed");
+            }
           }
-          else
-          {
-             alert("more than one stop is not allowed");
-          }
-        }
-        else{
+          else{
           alert("Create New Grid to clear the path");
-        }
+          }
 
         }
       }
@@ -1043,23 +1042,28 @@ $(document).ready(function() {
       }
       else if(y==7)
       {
-        if(indicate==0){
-        if(eachnode[index].occupied==false)
+        if(indicate==0)
         {
-          aliens.push(index);
-          alienpresent= true;
-          eachnode[index].toggleOccupied();
-          eachnode[index].createAlienNode(a,index);
-          if(aliens.length>1)
+          if(eachnode[index].occupied==false)
           {
-            eachnode[aliens[0]].removeNode(a,aliens[0]);
-            eachnode[aliens[0]].toggleOccupied();
-            aliens[0]=aliens[1];
-            aliens.pop();
-          }
+            aliens.push(index);
+            alienpresent= true;
+            eachnode[index].toggleOccupied();
+            eachnode[index].createAlienNode(a,index);
+            if(aliens.length>1)
+            {
+              eachnode[aliens[0]].removeNode(a,aliens[0]);
+              eachnode[aliens[0]].toggleOccupied();
+              aliens[0]=aliens[1];
+              aliens.pop();
+            }
 
+          }
         }
+        else{
+          alert("Create New Grid to clear the path");
         }
+
       }
 
 
