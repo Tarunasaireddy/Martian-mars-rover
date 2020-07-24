@@ -106,13 +106,13 @@ constructor(i,j) {
   this.value=false;
 }
 }
-
+//to check validity of particular box
 function isValid(row, col, size)
 {
     return (row >= 0) && (row < size) &&
          (col >= 0) && (col < size);
 }
-
+//gives true if the particular block is destination
 function isDestionation( row, col, dest, size)
 {
   if (row ==Math.floor(dest/size) && col == Math.floor(dest%size))
@@ -120,13 +120,13 @@ function isDestionation( row, col, dest, size)
   else
       return (false);
 }
-
+//distance between two block via distance formula
 function calculateHValue(row, col, dest, size)
 {
   return Math.sqrt((row-Math.floor(dest/size))*(row-Math.floor(dest/size))+ (col-Math.floor(dest%size))*(col-Math.floor(dest%size)));
 }
 
-// final path via parents
+// final path via parents (backtracking)
 function tracePath(a,eachnode,dest,size)
 {
 
@@ -157,7 +157,7 @@ function tracePath(a,eachnode,dest,size)
 
   return;
 }
-
+// finding neighbours in 8 directions
 function findNeighbours(x,y,size,allowDiagonal)
 {
   var neighbours= []
@@ -219,10 +219,11 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
     openset.delete(tempArray[0]);
     i=tempArray[0].row;
     j=tempArray[0].col;
+    // clodsed set used for tracking te visited nodes
     closedset[i*size+j].value=true;
 
     var gnew, hnew, fnew;
-
+   //finds te neighbours in 8 directions
     var neighbours= findNeighbours(i,j,size,allowDiagonal);
 
     for(next of neighbours)
@@ -233,6 +234,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 
       if(isValid(x,y,size)==true)
       {
+        // if destination reached it will back track
         if(isDestionation(x,y,endpoints,size)==true)
         {
           eachnode[ind].parent_i=i;
@@ -245,7 +247,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
           return;
 
         }
-
+        //else it will find the f values of the neighbours and push the one with min f
         else if (closedset[ind].value==false && eachnode[ind].occupied==false)
         {
           console.log("entered1");
@@ -644,6 +646,7 @@ $(document).ready(function() {
 
   var size=20;
   createGrid(size);
+  // for changing pointer
    $(".grid").mouseover(function() {
        //$(this).css("background-color", "grey");
         $(this).css("cursor", "pointer");
@@ -665,7 +668,7 @@ $(document).ready(function() {
   startpoints.push(0);
 
   endpoints.push(size*size-1);
-
+// Considering each box of grid as node with some properties
   for(var i=0;i<size;i++)
   {
     for(var j=0;j<size;j++)
@@ -677,10 +680,12 @@ $(document).ready(function() {
     }
     console.log("success");
   }
+  // setting start and end at opp corners of grid
   a[0].style.background="green";
   a[size*size-1].style.background="red";
   eachnode[0].toggleOccupied();
   eachnode[size*size-1].toggleOccupied();
+  // added function to each button
   b.forEach(function(button,index){
     button.addEventListener('click',function(){
       console.log("button clicked");
@@ -698,6 +703,7 @@ $(document).ready(function() {
         y=3;
       }
       else if (index==4) {
+        //creating new grid and again add properties to each box of grid
         size=refreshGrid();
         stops=[];
         walls=[];
@@ -856,11 +862,6 @@ $(document).ready(function() {
               }
             }
 
-
-
-
-
-
           });
         });
 
@@ -939,7 +940,7 @@ $(document).ready(function() {
       }
     });
   });
-
+  // initializing grid with properties
   a.forEach(function(button,index){
     button.addEventListener('click',function(){
       console.log("clicked");
