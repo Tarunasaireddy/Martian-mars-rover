@@ -14,7 +14,7 @@ Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final dest
 
 1. Select the Starting Point(Rover), Ending Point(Mars), Obstacles and Stop
    
-    Start: Selects the starting point of the Rover.
+    <b>Start:</b> Selects the starting point of the Rover.
 
     Obstacles(Optional): Selects the obstacles in the path.
 
