@@ -33,7 +33,7 @@ Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final dest
 
 3. To know who will be successful in colonizing Mars, The Aliens or our Rover
 
-    Add Alien: Selects the position of the Aliens' Rover who are heading to Mars too.
+    Add Alien(Optional): Selects the position of the Aliens' Rover who are heading to Mars too.
 
     Safety Search: Makes a search for the safety of our Rover, and predicts who will be successful in
                    reaching Mars first by comparing current distance via shortest path from Mars. 
