@@ -196,7 +196,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
   eachnode[startpoints[0]].getHCost=0;
   eachnode[startpoints[0]].parent_i=i;
   eachnode[startpoints[0]].parent_j=j;
-  //Put the starting cell on the open list and set its
+  //Put the starting cell on the open list 
   var openset= new Set;
   openset.clear;
   var closedset=[];
@@ -328,7 +328,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
     //takes out the current front node 
     var current= q.front();
     q.dequeue();
-    
+
     //if destination is reached
     if(current==endpoints[0])
     {
