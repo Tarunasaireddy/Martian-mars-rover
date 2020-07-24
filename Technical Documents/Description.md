@@ -1,6 +1,6 @@
 # Basic Usage:
 
-Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final destination,i.e, Mars,via the shortest path, to make a permanent human settlement there.
+Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final destination,i.e., Mars,via the shortest path, to make a permanent human settlement there.
 
 
 # Additional Features:
@@ -28,6 +28,7 @@ Martian-Mars-Rover is used to help the Mars Curiosity Rover reach its final dest
 
     AStarSearch: Uses AStar Search method to find the shortest path from Rover to Mars passing through a
                 stop(if present).
+                
     BreadthFirstSearch: Uses Breadth First Search method to find the shortest path from Rover to 
                         Mars passing through a stop(if present).
 
