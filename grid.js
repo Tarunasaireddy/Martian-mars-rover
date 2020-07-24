@@ -1,4 +1,4 @@
-// This is for creating grid
+// This is for creating the grid
 function createGrid(x) {
   for (var rows = 0; rows < x; rows++) {
       for (var columns = 0; columns < x; columns++) {
@@ -17,102 +17,102 @@ function refreshGrid(){
   return z;
 };
 
-// consider each block as a node
+// Consider each block of the grid as a Node 
 class Node {
 
-constructor(size, posx, posy, walkable, startpoints,endpoints) {
+  constructor(size, posx, posy, walkable, startpoints,endpoints) {
 
-  this.inPath = false;
-  this.getGCost = Infinity;
-  this.getHCost = Infinity;
-  this.getFCost = Infinity;
-  this.parent_i= -1;
-  this.parent_j= -1;
-  this.parent_ai= -1;
-  this.parent_aj= -1;
-  this.size = size;
-  this.posx = posx;
-  this.posy = posy;
-  this.walkable = walkable;
-  this.occupied= false;
-  this.startpoints= startpoints;
-  this.endpoints= endpoints;
-  this.visited= false;
-  this.alienvisited= false;
-}
-
-createStartNode(a,index) {
-
-    a[index].style.background="green";
-
+    this.inPath = false;
+    this.getGCost = Infinity;
+    this.getHCost = Infinity;
+    this.getFCost = Infinity;
+    this.parent_i= -1;
+    this.parent_j= -1;
+    this.parent_ai= -1;
+    this.parent_aj= -1;
+    this.size = size;
+    this.posx = posx;
+    this.posy = posy;
+    this.walkable = walkable;
+    this.occupied= false;
+    this.startpoints= startpoints;
+    this.endpoints= endpoints;
+    this.visited= false;
+    this.alienvisited= false;
   }
-createEndNode(a,index) {
 
+  //Creating the Starting Node
+  createStartNode(a,index) {
+    a[index].style.background="green";
+  }
+
+  //Creating the Ending Node  
+  createEndNode(a,index) {
     a[index].style.background="red";
+  }
 
-}
-createAlienNode(a,index) {
-
+  //Creating an Alien Node
+  createAlienNode(a,index) {
     a[index].style.background="yellow";
+  }
 
-}
-toggleWalkable() {
-
-  this.walkable = !this.walkable;
-
-}
-
-createWall(a,index) {
-
+  //Creating a Wall Node
+  createWall(a,index) {
     a[index].style.background="grey";
+  }
 
-}
-createStop(a,index) {
-
+  //Creating a Stop Node
+  createStop(a,index) {
     a[index].style.background="violet";
+  }
 
-}
-createpath(a,index) {
-
+  //Creating a Node which is a part of the final shortest path
+  createpath(a,index) {
     a[index].style.background="black";
+  }
 
-}
-removeNode(a,index) {
-
+  //Removing a node
+  removeNode(a,index) {
     a[index].style.background="";
+  }
 
-}
- toggleOccupied() {
+  //Changing the state of walkability 
+  toggleWalkable() {
+    this.walkable = !this.walkable;
+  }
 
+  //Changing the state of occupied  
+  toggleOccupied() {
     this.occupied=!this.occupied;
-
- }
-
+  }
 }
 
 //openlist
 class openList{
-constructor(f,row,col){
-  this.f=f;
-  this.row=row;
-  this.col=col;
-}
+  constructor(f,row,col){
+    this.f=f;
+    this.row=row;
+    this.col=col;
+  }
 }
 
+//closedlist
 class closedList {
-constructor(i,j) {
-  this.i=i;
-  this.j=j;
-  this.value=false;
+  constructor(i,j) {
+    this.i=i;
+    this.j=j;
+    this.value=false;
+  }
 }
-}
-//to check validity of particular box
+
+//To check the validity of the particular block
 function isValid(row, col, size)
 {
     return (row >= 0) && (row < size) &&
          (col >= 0) && (col < size);
 }
-//gives true if the particular block is destination
+
+//Returns true if the particular block is the destination
 function isDestionation( row, col, dest, size)
 {
   if (row ==Math.floor(dest/size) && col == Math.floor(dest%size))
@@ -120,13 +120,14 @@ function isDestionation( row, col, dest, size)
   else
       return (false);
 }
-//distance between two block via distance formula
+
+//Returns distance between two block via distance formula
 function calculateHValue(row, col, dest, size)
 {
   return Math.sqrt((row-Math.floor(dest/size))*(row-Math.floor(dest/size))+ (col-Math.floor(dest%size))*(col-Math.floor(dest%size)));
 }
 
-// final path via parents (backtracking)
+//Final path via parents (backtracking)
 function tracePath(a,eachnode,dest,size)
 {
 
@@ -157,7 +158,8 @@ function tracePath(a,eachnode,dest,size)
 
   return;
 }
-// finding neighbours in 8 directions
+
+//Finding neighbours of the current block in 8 directions
 function findNeighbours(x,y,size,allowDiagonal)
 {
   var neighbours= []
@@ -178,7 +180,7 @@ function findNeighbours(x,y,size,allowDiagonal)
 
 
 
-//astar search here
+//Astar Search method to find the shortest path
 
 function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
 {
@@ -219,7 +221,7 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
     openset.delete(tempArray[0]);
     i=tempArray[0].row;
     j=tempArray[0].col;
-    // clodsed set used for tracking te visited nodes
+    // clodsed set used for tracking the visited nodes
     closedset[i*size+j].value=true;
 
     var gnew, hnew, fnew;
@@ -271,14 +273,14 @@ function astarSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal,flag)
       }
     }
   }
-
+  //if destination cannot be reached
   if (foundDest == false)
       alert("not found");
 
   return;
 }
 
-//implementation of a queue
+//Implementation of a queue
 class Queue
 {
   constructor() {
@@ -303,7 +305,7 @@ class Queue
 
 }
 
-//breadthfirst search here
+//Breadth First Search method to find the shortest path
 function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
 {
   var i,j;
@@ -324,6 +326,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
   {
     var current= q.front();
     q.dequeue();
+    //if destination is reached
     if(current==endpoints[0])
     {
       foundDest=true;
@@ -332,7 +335,7 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
     i= Math.floor(current/size);
     j= Math.floor(current%size);
 
-    //valid neighbouring blocks of the current block are added to an array
+    //finds valid neighbouring blocks of the current block
     var neighbours= findNeighbours(i,j,size,allowDiagonal);
 
     for(next of neighbours)
@@ -340,7 +343,8 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
       var x= next[0];
       var y= next[1];
       var ind= (x*size) + y;
-
+      
+      //if destination is reached, path is traced 
       if(isDestionation(x,y,endpoints,size)==true)
       {
         eachnode[endpoints[0]].parent_i=i;
@@ -364,13 +368,15 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
     }
 
   }
+
+  //if destination cannot be reached
   if(foundDest == false)
     alert("not found");
 
   return;
 }
 
-// final alienpath via parents
+// Final alienpath via parents
 function alienPath(a,eachnode,dest,size)
 {
   var row = Math.floor(dest/size);
@@ -391,7 +397,7 @@ function alienPath(a,eachnode,dest,size)
   return path;
 }
 
-// final roverpath via parents
+// Final roverpath via parents
 function roverPath(a,eachnode,dest,size)
 {
   var row = Math.floor(dest/size);
@@ -413,7 +419,8 @@ function roverPath(a,eachnode,dest,size)
   return path;
 }
 
-
+//Determines who will reach Mars first- the Aliens or the Rover,
+//by comparing their shortest path distances from the destination
 function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal)
 {
   var distRover=0,distAlien=0;
@@ -439,14 +446,17 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
   eachnode[startpoints[0]].visited=true;
   q.enqueue(startpoints[0]);
 
+  //continues till q is not empty
   while(q.isEmpty()==false)
   {
+    //takes out the current front node 
     var current= q.front();
     q.dequeue();
 
     i= Math.floor(current/size);
     j= Math.floor(current%size);
 
+    //if destination is reached
     if(isDestionation(i,j,endpoints,size)==true)
     {
       foundRover=true;
@@ -462,6 +472,7 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
       var y= next[1];
       var ind= (x*size) + y;
 
+      //if destination is reached
       if(isDestionation(x,y,endpoints,size)==true)
       {
         eachnode[endpoints[0]].parent_i=i;
@@ -484,10 +495,13 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
     }
     if(foundRover==true) break;
   }
+
+  //Rover cannot reach the destination
   if(foundRover == false)
   {
     distRover=0;
   }
+  //If Rover can reach the destination, path is stored by backtracking parents
   else
   {
     roverpath=roverPath(a,eachnode,endpoints,size);
@@ -501,14 +515,17 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
   eachnode[aliens[0]].alienvisited=true;
   aq.enqueue(aliens[0]);
 
+  //continues till aq is not empty
   while(aq.isEmpty()==false)
   {
+    //takes out the current front node
     var current= aq.front();
     aq.dequeue();
 
     ai= Math.floor(current/size);
     aj= Math.floor(current%size);
 
+    //if destination is reached
     if(isDestionation(ai,aj,endpoints,size)==true)
     {
       foundAlien=true;
@@ -523,6 +540,7 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
       var y= next[1];
       var ind= (x*size) + y;
 
+      //if destination is reached
       if(isDestionation(x,y,endpoints,size)==true)
       {
         eachnode[endpoints[0]].parent_ai=ai;
@@ -545,17 +563,20 @@ function safetySearch(a,eachnode,startpoints,aliens,endpoints,size,allowDiagonal
     }
     if(foundAlien==true) break;
   }
+
+  //Aliens cannot reach the destination
   if(foundAlien == false)
   {
     distAlien=0;
   }
+  //If Aliens can reach the destination, path is stored by backtracking parents
   else
   {
     alienpath=alienPath(a,eachnode,endpoints,size);
     distAlien=alienpath.length-2;
   }
 
-
+  //If both can reach the destination
   if(distRover!=0 && distAlien!=0)
   {
     if(distRover<distAlien)
@@ -593,11 +614,13 @@ Both Rover and Aliens will reach Mars at the same time! Get ready for a BATTLE!!
 
   }
 
+  //If none of them can reach the destination
   else if(distRover==0 && distAlien==0)
   {
     alert("Neither our Rover nor the Aliens can reach Mars");
   }
 
+  //if Rover cannot reach the destination
   else if(distRover==0)
   {
     alert(`Alien Distance=${String(distAlien)}
@@ -608,6 +631,7 @@ The Aliens will reach Mars but our Rover cannot :(`);
     }
   }
 
+  //if Aliens cannot reach the destination
   else if(distAlien==0)
   {
     alert(`Rover Distance=${String(distRover)}
@@ -619,7 +643,8 @@ Our Rover will reach Mars but the Aliens cannot :)`);
   }
 }
 
-
+//Restores the original nodes after Rover reaches the Stop
+//so that they can be part of the path from the Stop to destination
 function makenew(a,eachnode,size)
 {
   for(var i=0;i<size*size;i++)
@@ -640,7 +665,7 @@ function makenew(a,eachnode,size)
 
 
 
-// we will decide grid size accordingly
+// Grid size can be decided accordingly
 // this is for manipulating things as required for our project.
 $(document).ready(function() {
 
@@ -1068,10 +1093,8 @@ $(document).ready(function() {
 
 
 
-
-
-
     });
+    
   });
 
 
