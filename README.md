@@ -5,5 +5,5 @@ To see the hosted website [Click here!](https://tarunasaireddy.github.io/Martian
 # Technical details
 For project description check out the [Description.md](https://github.com/Tarunasaireddy/Martian-mars-rover/tree/master/Technical%20Documents/Description.md) in Technical Documents folder.
 </br>
-</br>
+
 For project prototype check out the [prototype.md](https://github.com/Tarunasaireddy/Martian-mars-rover/blob/master/Technical%20Documents/prototype.md) in Technical Documents folder.
