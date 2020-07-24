@@ -322,10 +322,13 @@ function breadthFirstSearch(a,eachnode,startpoints,endpoints,size,allowDiagonal)
   eachnode[startpoints[0]].visited=true;
   q.enqueue(startpoints[0]);
 
+  //continues till q is not empty
   while(q.isEmpty()==false)
   {
+    //takes out the current front node 
     var current= q.front();
     q.dequeue();
+    
     //if destination is reached
     if(current==endpoints[0])
     {
@@ -1094,7 +1097,7 @@ $(document).ready(function() {
 
 
     });
-    
+
   });
 
 
