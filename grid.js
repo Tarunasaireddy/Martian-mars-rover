@@ -794,19 +794,25 @@ $(document).ready(function() {
             {
               if(eachnode[index].occupied==false )
               {
+                if(indicate==0)
+              {
                 if(stops.length==0)
                 {
-                  if(indicate==0)
-                  {
+
                     stops.push(index);
                     eachnode[index].createStop(a,index);
                     eachnode[index].toggleOccupied();
                   }
-                }
+
+
                 else
                 {
                    alert("more than one stop is not allowed");
                 }
+              }
+              else{
+                alert("Create New Grid to clear the path");
+              }
 
               }
             }
@@ -994,19 +1000,24 @@ $(document).ready(function() {
       {
         if(eachnode[index].occupied==false )
         {
+          if(indicate==0)
+          {
           if(stops.length==0)
           {
-            if(indicate==0)
-            {
+
               stops.push(index);
               eachnode[index].createStop(a,index);
               eachnode[index].toggleOccupied();
-            }
+
           }
           else
           {
              alert("more than one stop is not allowed");
           }
+        }
+        else{
+          alert("Create New Grid to clear the path");
+        }
 
         }
       }
