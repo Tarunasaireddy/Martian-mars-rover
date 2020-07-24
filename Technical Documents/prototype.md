@@ -1,4 +1,4 @@
-# Basic Structure of Martian-Mars-Rover
+# Basic Structure of Martian-Mars-Rover 
 
 1. A 2D grid (representing Space) is created with intial size of (20*20), whose size can be changed by  
    user input using the New Grid button. 
@@ -15,7 +15,7 @@
     <b>Obstacle</b>: Grey, Not Walkable, Occupied
 
     <b>Stop</b>: Violet, Walkable, Occupied
-    
+
     <b>Alien</b>: Yellow, Walkable, Occupied
 
 4. Initially, the Start node is at (0,0) position and End Node is at ((size-1),(size-1)) position.
